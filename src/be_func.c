@@ -5,7 +5,7 @@
 #include "be_vm.h"
 
 #define clousersize( n ) \
-  ( sizeof( bclosure ) + sizeof( bupval * ) * (( n ) - 1 ))
+  ( sizeof( bclosure ) + sizeof( bupval * ) * ( ( n ) - 1 ) )
 
 void
 be_initupvals( bvm * vm, bclosure * cl )
@@ -35,7 +35,7 @@ be_findupval( bvm * vm, bvalue * level )
   if ( !node || node->value != level )
     {
        /* not found */
-      node         = be_malloc( sizeof( bupval ));
+      node         = be_malloc( sizeof( bupval ) );
       node->value  = level;
       node->refcnt = 0;
        /* insert to list head */
@@ -102,7 +102,7 @@ be_newproto( bvm * vm )
 bclosure *
 be_newclosure( bvm * vm, int nupval )
 {
-  bgcobject * gco = be_newgcobj( vm, BE_CLOSURE, clousersize( nupval ));
+  bgcobject * gco = be_newgcobj( vm, BE_CLOSURE, clousersize( nupval ) );
   bclosure *  cl  = cast_closure( gco );
 
   if ( cl )
@@ -123,7 +123,7 @@ init_upvals( bntvclos * f )
 
   while ( count-- )
     {
-      bupval * uv = be_malloc( sizeof( bupval )); /* was closed */
+      bupval * uv = be_malloc( sizeof( bupval ) ); /* was closed */
       uv->value  = &uv->u.value;
       uv->refcnt = 1;
       var_setnil( uv->value );

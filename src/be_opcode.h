@@ -17,20 +17,20 @@
 #define IAx_BITS     ( IRA_BITS + IRKB_BITS + IRKC_BITS )
 #define IBx_BITS     ( IRKC_BITS + IRKB_BITS )
 
-#define INS_MASK( pos, \
-                  bits )    ((binstruction) (( 1 << ( bits )) - 1 ) << ( pos ))
-#define INS_GETx( i, mask, pos )                 \
-                            cast_int(            \
-    ((binstruction) ( i ) & ( mask )) >> ( pos ) \
+#define INS_MASK( pos, bits )                             \
+  ( (binstruction) ( ( 1 << ( bits ) ) - 1 ) << ( pos ) )
+#define INS_GETx( i, mask, pos )                   \
+  cast_int(                                        \
+    ( (binstruction) ( i ) & ( mask ) ) >> ( pos ) \
           )
-#define INS_SETx( v, mask, \
-                  pos )     (((binstruction) ( v ) << ( pos )) & ( mask ))
+#define INS_SETx( v, mask, pos )                     \
+  ( ( (binstruction) ( v ) << ( pos ) ) & ( mask ) )
 
-#define isK( v )            ((( v ) & ( 1 << ( IRKB_BITS - 1 ))) != 0 )
-#define setK( v )           (( v ) | ( 1 << ( IRKB_BITS - 1 )))
-#define KR2idx( v )         (( v ) & 0xFF )
-#define isKB( v )           ((( v ) & ( 1 << ( IRA_POS - 1 ))) != 0 )
-#define isKC( v )           ((( v ) & ( 1 << ( IRKB_POS - 1 ))) != 0 )
+#define isK( v )            ( ( ( v ) & ( 1 << ( IRKB_BITS - 1 ) ) ) != 0 )
+#define setK( v )           ( ( v ) | ( 1 << ( IRKB_BITS - 1 ) ) )
+#define KR2idx( v )         ( ( v ) & 0xFF )
+#define isKB( v )           ( ( ( v ) & ( 1 << ( IRA_POS - 1 ) ) ) != 0 )
+#define isKC( v )           ( ( ( v ) & ( 1 << ( IRKB_POS - 1 ) ) ) != 0 )
 
 #define IOP_MASK     INS_MASK( IOP_POS, IOP_BITS )
 #define IRA_MASK     INS_MASK( IRA_POS, IRA_BITS )
@@ -41,7 +41,7 @@
 #define IsBx_MAX     cast_int( IBx_MASK >> 1 )
 #define IsBx_MIN     cast_int( -IsBx_MAX - 1 )
 
-#define IGET_OP( i )     cast( bopcode, INS_GETx( i, IOP_MASK, IOP_POS ))
+#define IGET_OP( i )     cast( bopcode, INS_GETx( i, IOP_MASK, IOP_POS ) )
 #define IGET_RA( i )     INS_GETx( i, IRA_MASK, IRA_POS )
 #define IGET_RKB( i )    INS_GETx( i, IRKB_MASK, IRKB_POS )
 #define IGET_RKC( i )    INS_GETx( i, IRKC_MASK, IRKC_POS )
@@ -53,7 +53,7 @@
 #define ISET_RKB( i )    INS_SETx( i, IRKB_MASK, IRKB_POS )
 #define ISET_RKC( i )    INS_SETx( i, IRKC_MASK, IRKC_POS )
 #define ISET_Bx( i )     INS_SETx( i, IBx_MASK, 0 )
-#define ISET_sBx( i )    ( ISET_Bx( cast_int( i ) + IsBx_MAX ))
+#define ISET_sBx( i )    ( ISET_Bx( cast_int( i ) + IsBx_MAX ) )
 
 typedef enum
 {
@@ -105,4 +105,4 @@ typedef enum
 
 const char *      be_opcode2str( bopcode op );
 
-#endif
+#endif /* ndef BE_OPCODE_H */

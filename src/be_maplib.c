@@ -8,7 +8,7 @@
     }
 
 #define map_check_ref( vm )         \
-  if ( be_refcontains( vm, 1 ))     \
+  if ( be_refcontains( vm, 1 ) )    \
     {                               \
       be_pushstring( vm, "{...}" ); \
       be_return( vm );              \
@@ -17,7 +17,7 @@
 static int
 m_init( bvm * vm )
 {
-  if ( be_top( vm ) > 1 && be_ismap( vm, 2 ))
+  if ( be_top( vm ) > 1 && be_ismap( vm, 2 ) )
     {
       be_pushvalue( vm, 2 );
       be_setmember( vm, 1, ".data" );
@@ -33,9 +33,9 @@ m_init( bvm * vm )
 static void
 push_key( bvm * vm )
 {
-  if ( be_isstring( vm, -2 )) /* add ''' to strings */
+  if ( be_isstring( vm, -2 ) ) /* add ''' to strings */
     {
-      be_pushfstring( vm, "'%s'", be_tostring( vm, -2 ));
+      be_pushfstring( vm, "'%s'", be_tostring( vm, -2 ) );
     }
   else
     {
@@ -49,9 +49,9 @@ push_key( bvm * vm )
 static void
 push_value( bvm * vm )
 {
-  if ( be_isstring( vm, -1 )) /* add ''' to strings */
+  if ( be_isstring( vm, -1 ) ) /* add ''' to strings */
     {
-      be_pushfstring( vm, "'%s'", be_tostring( vm, -1 ));
+      be_pushfstring( vm, "'%s'", be_tostring( vm, -1 ) );
     }
   else
     {
@@ -60,7 +60,7 @@ push_value( bvm * vm )
     }
   be_strconcat( vm, -5 );
   be_pop( vm, 3 );
-  if ( be_iter_hasnext( vm, -3 ))
+  if ( be_iter_hasnext( vm, -3 ) )
     {
       be_pushstring( vm, ", " );
       be_strconcat( vm, -3 );
@@ -77,7 +77,7 @@ m_tostring( bvm * vm )
   be_refpush( vm, 1 );
   be_pushstring( vm, "{" );
   be_pushiter( vm, -2 ); /* map iterator use 1 register */
-  while ( be_iter_hasnext( vm, -3 ))
+  while ( be_iter_hasnext( vm, -3 ) )
     {
       be_iter_next( vm, -3 );
       push_key( vm );            /* key.tostring() */
@@ -141,7 +141,7 @@ m_size( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
   map_check_data( vm, 1 );
-  be_pushint( vm, be_data_size( vm, -1 ));
+  be_pushint( vm, be_data_size( vm, -1 ) );
   be_return( vm );
 }
 
@@ -163,7 +163,7 @@ i_hashnext( bvm * vm )
   be_getmember( vm, 1, ".obj" );
   be_getmember( vm, -1, ".data" );
   be_getmember( vm, 1, ".iter" );
-  be_pushbool( vm, be_iter_hasnext( vm, -2 ));
+  be_pushbool( vm, be_iter_hasnext( vm, -2 ) );
   be_return( vm );
 }
 
@@ -185,17 +185,12 @@ m_iter( bvm * vm )
 {
   static const bnfuncinfo members[] =
   {
-    { ".obj",
-      NULL                                                         },
-    { ".iter",
-      NULL                                                         },
-    { "init",
-      i_init                                                       },
-    { "hasnext",
-      i_hashnext                                                   },
-    { "next",
-      i_next                                                       },
-    { NULL,     NULL                                                          }
+    { ".obj",    NULL                                                      },
+    { ".iter",   NULL                                                      },
+    { "init",    i_init                                                    },
+    { "hasnext", i_hashnext                                                },
+    { "next",    i_next                                                    },
+    { NULL,      NULL                                                      }
   };
 
   be_pushclass( vm, "iterator", members );
@@ -211,14 +206,16 @@ m_iter( bvm * vm )
   {
     static const bnfuncinfo members[] =
     {
-      { ".data",    NULL                                                     },
-      { "init",     m_init                                                   },
-      { "tostring", m_tostring                                               },
-      { "insert",   m_insert                                                 },
-      { "remove",   m_remove                                                 },
-      { "item",     m_item                                                   },
-      { "setitem",  m_setitem                                                },{ "size", m_size }, { "iter", m_iter },
-      { NULL,       NULL                                                     }
+      { ".data",    NULL                                           },
+      { "init",     m_init                                         },
+      { "tostring", m_tostring                                     },
+      { "insert",   m_insert                                       },
+      { "remove",   m_remove                                       },
+      { "item",     m_item                                         },
+      { "setitem",  m_setitem                                      },
+      { "size",     m_size                                         },
+      { "iter",     m_iter                                         },
+      { NULL,       NULL                                           }
     };
 
     be_regclass( vm, "map", members );

@@ -24,11 +24,11 @@ static int
 i_write( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ) && be_isstring( vm, 2 ))
+  if ( be_iscomptr( vm, -1 ) && be_isstring( vm, 2 ) )
     {
       be_fhandle   fh   = be_tocomptr( vm, -1 );
       const char * data = be_tostring( vm, 2 );
-      be_fwrite( fh, data, be_strlen( vm, 2 ));
+      be_fwrite( fh, data, be_strlen( vm, 2 ) );
     }
   be_return_nil( vm );
 }
@@ -36,9 +36,9 @@ i_write( bvm * vm )
 static size_t
 readsize( bvm * vm, int argc, be_fhandle fh )
 {
-  if ( argc >= 2 && be_isint( vm, 2 )) return( be_toindex( vm, 2 ));
+  if ( argc >= 2 && be_isint( vm, 2 ) ) return( be_toindex( vm, 2 ) );
 
-  return( be_fsize( fh ) - be_ftell( fh ));
+  return( be_fsize( fh ) - be_ftell( fh ) );
 }
 
 static int
@@ -47,7 +47,7 @@ i_read( bvm * vm )
   int argc = be_top( vm );
 
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ))
+  if ( be_iscomptr( vm, -1 ) )
     {
       be_fhandle fh     = be_tocomptr( vm, -1 );
       size_t     size   = readsize( vm, argc, fh );
@@ -63,7 +63,7 @@ static int
 i_readline( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ))
+  if ( be_iscomptr( vm, -1 ) )
     {
       be_fhandle fh = be_tocomptr( vm, -1 );
       size_t     pos = 0, size = READLINE_STEP;
@@ -87,10 +87,10 @@ static int
 i_seek( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ) && be_isint( vm, 2 ))
+  if ( be_iscomptr( vm, -1 ) && be_isint( vm, 2 ) )
     {
       be_fhandle fh = be_tocomptr( vm, -1 );
-      be_fseek( fh, be_toindex( vm, 2 ));
+      be_fseek( fh, be_toindex( vm, 2 ) );
     }
   be_return_nil( vm );
 }
@@ -99,11 +99,11 @@ static int
 i_tell( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ))
+  if ( be_iscomptr( vm, -1 ) )
     {
       be_fhandle fh  = be_tocomptr( vm, -1 );
       size_t     pos = be_ftell( fh );
-      be_pushint( vm, cast( bint, pos ));
+      be_pushint( vm, cast( bint, pos ) );
       be_return( vm );
     }
   be_return_nil( vm );
@@ -113,11 +113,11 @@ static int
 i_size( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ))
+  if ( be_iscomptr( vm, -1 ) )
     {
       be_fhandle fh  = be_tocomptr( vm, -1 );
       size_t     pos = be_fsize( fh );
-      be_pushint( vm, cast( bint, pos ));
+      be_pushint( vm, cast( bint, pos ) );
       be_return( vm );
     }
   be_return_nil( vm );
@@ -127,7 +127,7 @@ static int
 i_flush( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ))
+  if ( be_iscomptr( vm, -1 ) )
     {
       be_fhandle fh = be_tocomptr( vm, -1 );
       be_fflush( fh );
@@ -139,7 +139,7 @@ static int
 i_close( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
-  if ( be_iscomptr( vm, -1 ))
+  if ( be_iscomptr( vm, -1 ) )
     {
       be_fhandle fh = be_tocomptr( vm, -1 );
       be_fclose( fh );

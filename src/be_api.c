@@ -39,9 +39,9 @@ class_init( bvm * vm, bclass * c, const bnfuncinfo * lib )
   while ( lib->name )
     {
       bstring * s = be_newstr( vm, lib->name );
-      if ( lib->function )         /* method */
+      if ( lib->function )          /* method */
         be_prim_method_bind( c, s, lib->function );
-      else be_member_bind( c, s ); /* member */
+      else be_member_bind( c, s );  /* member */
       ++lib;
     }
   be_map_release( vm, c->members ); /* clear space */
@@ -65,12 +65,12 @@ be_regfunc( bvm * vm, const char * name, bntvfunc f )
 void
 be_regclass( bvm * vm, const char * name, const bnfuncinfo * lib )
 {
-  /* Immediate reference must be made, prevent GC. */
-  bstring * s  = be_newstr( vm, name );
-  /* Because relloc is possible, index must first figure out. */
-  int idx      = be_globalvar_new( vm, s );
+   /* Immediate reference must be made, prevent GC. */
+  bstring * s = be_newstr( vm, name );
+   /* Because relloc is possible, index must first figure out. */
+  int      idx = be_globalvar_new( vm, s );
   bclass * c   = be_newclass( vm, s, NULL );
-  /* Attention evaluation order. */
+   /* Attention evaluation order. */
   bvalue * var = be_globalvar( vm, idx );
 
   var_setclass( var, c );
@@ -336,7 +336,7 @@ be_pushstring( bvm * vm, const char * str )
 void
 be_pushnstring( bvm * vm, const char * str, size_t n )
 {
-  /* 
+  /*
      To create a string and then push the top registor,
      otherwise the GC may crash due to uninitialized values.
    */

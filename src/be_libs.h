@@ -4,4 +4,4 @@
 
 #include "berry.h"
 
-#endif
+#endif /* ndef BE_LIBS_H */

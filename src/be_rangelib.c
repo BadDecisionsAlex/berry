@@ -72,15 +72,9 @@ i_hashnext( bvm * vm )
   be_getmember( vm, 1, ".obj" );
   be_getmember( vm, 1, ".iter" );
   be_getmember( vm, -2, "__upper__" );
-  if ( !be_isint(
-         vm,
-         -2
-                ) || be_toint( vm, -2 ) < be_toint( vm, -1 ))
+  if ( !be_isint( vm, -2) || be_toint( vm, -2 ) < be_toint( vm, -1 ) )
     {
-      be_pushbool(
-        vm,
-        btrue
-                 );
+      be_pushbool( vm, btrue );
     }
   else
     {
@@ -93,7 +87,7 @@ static int
 i_next( bvm * vm )
 {
   be_getmember( vm, 1, ".iter" );
-  if ( !be_isint( vm, -1 ))
+  if ( !be_isint( vm, -1 ) )
     {
       be_getmember( vm, 1, ".obj" );
       be_getmember( vm, -1, "__lower__" );

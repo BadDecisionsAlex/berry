@@ -7,7 +7,7 @@
   int
   m_time( bvm * vm )
   {
-    be_pushint( vm, (bint) time( NULL ));
+    be_pushint( vm, (bint) time( NULL ) );
     be_return( vm );
   }
 

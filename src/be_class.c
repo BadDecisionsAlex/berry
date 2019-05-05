@@ -161,7 +161,7 @@ be_instance_setmember( binstance * obj, bstring * name, bvalue * src )
   bvalue v;
 
   obj = instance_member( obj, name, &v );
-  if ( obj && var_istype( &v, MT_VARIABLE ))
+  if ( obj && var_istype( &v, MT_VARIABLE ) )
     {
       obj->members[var_toint( &v )] = *src;
 

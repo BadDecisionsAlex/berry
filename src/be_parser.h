@@ -71,4 +71,4 @@ bclosure *      be_parser_source( bvm *        vm,
                                   breader      reader,
                                   void *       data );
 
-#endif
+#endif /* ndef BE_PARSER_H */

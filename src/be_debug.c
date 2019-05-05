@@ -139,11 +139,11 @@ print_inst( binstruction ins, int pc )
       break;
 
     case OP_CLOSE:
-      printf( "%s\t%d\n", be_opcode2str( op ), IGET_RA( ins ));
+      printf( "%s\t%d\n", be_opcode2str( op ), IGET_RA( ins ) );
       break;
 
     default:
-      printf( "%s\n", be_opcode2str( op ));
+      printf( "%s\n", be_opcode2str( op ) );
       break;
     }
 }
@@ -176,7 +176,7 @@ printproto( bproto * proto )
 {
   int i;
 
-  printf( "function '%s':\n", str( proto->name ));
+  printf( "function '%s':\n", str( proto->name ) );
   print_code( proto ); /* print this proto */
   for ( i = 0; i < proto->nproto; ++i ) printproto( proto->ptab[i] );
 }
@@ -193,7 +193,7 @@ sourceinfo( bvm * vm, char * buf, int deepth )
   #if BE_RUNTIME_DEBUG_INFO
     int          size  = be_stack_count( &vm->callstack );
     bcallframe * cf    = be_vector_at( &vm->callstack, size + deepth );
-    bproto *     proto = cast( bclosure *, var_toobj( cf->func ))->proto;
+    bproto *     proto = cast( bclosure *, var_toobj( cf->func ) )->proto;
     blineinfo *  start = proto->lineinfo;
     blineinfo *  it    = start + proto->nlineinfo - 1;
     int          pc;
@@ -225,12 +225,12 @@ be_debug_ins_info( bvm * vm )
 {
   char         buf[100];
   bcallframe * cf      = vm->cf;
-  bproto *     proto   = cast( bclosure *, var_toobj( cf->func ))->proto;
+  bproto *     proto   = cast( bclosure *, var_toobj( cf->func ) )->proto;
   int          pc      = cast_int( vm->ip - proto->code );
   const char * srcinfo = sourceinfo( vm, buf, -1 );
-  size_t       len     = strlen( srcinfo ) + strlen( str( proto->name )) + 1;
+  size_t       len     = strlen( srcinfo ) + strlen( str( proto->name ) ) + 1;
 
-  printf( "%s %s", srcinfo, str( proto->name ));
+  printf( "%s %s", srcinfo, str( proto->name ) );
   for (; len < 40; len += 8 ) printf( "\t" );
   print_inst( *vm->ip, pc );
 }
@@ -253,7 +253,7 @@ tracestack( bvm * vm )
   for ( deepth = 1; deepth <= size; ++deepth )
     {
       bcallframe * cf = be_vector_at( &vm->callstack, size - deepth );
-      if ( var_isclosure( cf->func ))
+      if ( var_isclosure( cf->func ) )
         {
           char       buf[100];
           bclosure * cl = var_toobj( cf->func );
@@ -282,7 +282,7 @@ addinfo( bvm * vm, const char * msg )
 {
   bcallframe * cf = vm->cf;
 
-  if ( var_isclosure( cf->func ))
+  if ( var_isclosure( cf->func ) )
     {
       char buf[100];
       be_pushfstring(

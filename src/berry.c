@@ -45,10 +45,9 @@
   #define FULL_VERSION    "LSD " BERRY_VERSION
 #endif
 
-#define repl_prelude                                                     \
-  FULL_VERSION " (build in " __DATE__ ", " __TIME__ ")\n"                \
-                                                    "[" COMPILER "] on " \
-  OS_NAME " (default)\n"                                                 \
+#define repl_prelude                                      \
+  FULL_VERSION " (build in " __DATE__ ", " __TIME__ ")\n" \
+  "[" COMPILER "] on " OS_NAME " (default)\n"
 
 static const char * help_information
   =
@@ -77,7 +76,7 @@ get_line( const char * prompt )
     static char buffer[1000];
     fputs( prompt, stdout );
     fflush( stdout );
-    if ( fgets( buffer, sizeof( buffer ), stdin )) return( buffer );
+    if ( fgets( buffer, sizeof( buffer ), stdin ) ) return( buffer );
 
     return( NULL );
   #endif
@@ -99,12 +98,12 @@ dofile( bvm * vm )
     case BE_IO_ERROR:     /* IO error */
     case BE_SYNTAX_ERROR: /* syntax error */
     case BE_EXEC_ERROR:   /* vm run error */
-      printf( "%s\n", be_tostring( vm, -1 ));
+      printf( "%s\n", be_tostring( vm, -1 ) );
 
       return( 1 );
 
     case BE_EXIT: /* return exit code */
-      return( be_toindex( vm, -1 ));
+      return( be_toindex( vm, -1 ) );
 
     case BE_MALLOC_FAIL:
       printf( "error: malloc fail.\n" );
@@ -180,11 +179,11 @@ analysis_args( bvm * vm )
   if ( be_top( vm ) > 0 )
     {
       int res = dofile( vm );
-      if ( res && !( args & arg_i )) return( res );
+      if ( res && !( args & arg_i ) ) return( res );
 
-      be_pop( vm, be_top( vm ));
+      be_pop( vm, be_top( vm ) );
     }
-  if ( args & arg_i ) return( be_repl( vm, get_line ));
+  if ( args & arg_i ) return( be_repl( vm, get_line ) );
 
   return( 0 );
 }

@@ -9,7 +9,7 @@
     }
 
 #define list_check_ref( vm )        \
-  if ( be_refcontains( vm, 1 ))     \
+  if ( be_refcontains( vm, 1 ) )    \
     {                               \
       be_pushstring( vm, "[...]" ); \
       be_return( vm );              \
@@ -20,7 +20,7 @@ m_init( bvm * vm )
 {
   int i, argc = be_top( vm );
 
-  if ( argc > 1 && be_islist( vm, 2 ))
+  if ( argc > 1 && be_islist( vm, 2 ) )
     {
       be_pushvalue( vm, 2 );
       be_setmember( vm, 1, ".data" );
@@ -42,9 +42,9 @@ m_init( bvm * vm )
 static void
 push_element( bvm * vm )
 {
-  if ( be_isstring( vm, -1 )) /* Add '"' to strings */
+  if ( be_isstring( vm, -1 ) ) /* Add '"' to strings */
     {
-      be_pushfstring( vm, "'%s'", be_tostring( vm, -1 ));
+      be_pushfstring( vm, "'%s'", be_tostring( vm, -1 ) );
       be_remove( vm, -2 );
     }
   else
@@ -64,11 +64,11 @@ m_tostring( bvm * vm )
   be_refpush( vm, 1 );
   be_pushstring( vm, "[" );
   be_pushiter( vm, -2 );
-  while ( be_iter_hasnext( vm, -3 ))
+  while ( be_iter_hasnext( vm, -3 ) )
     {
       be_iter_next( vm, -3 );
       push_element( vm );
-      if ( be_iter_hasnext( vm, -3 ))
+      if ( be_iter_hasnext( vm, -3 ) )
         {
           be_pushstring( vm, ", " );
           be_strconcat( vm, -3 );
@@ -165,7 +165,7 @@ item_list( bvm * vm )
     {
       be_pushint( vm, i );
       be_getindex( vm, -5 );
-      if ( be_isint( vm, -1 ))
+      if ( be_isint( vm, -1 ) )
         {
           int idx = be_toindex( vm, -1 );
           if ( idx >= 0 && idx < srcsize ) be_getindex( vm, -3 );
@@ -187,18 +187,18 @@ m_item( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
   list_check_data( vm, 2 );
-  if ( be_isint( vm, 2 ))
+  if ( be_isint( vm, 2 ) )
     {
       be_pushvalue( vm, 2 );
       be_getindex( vm, -2 );
       be_return( vm );
     }
-  if ( be_isinstance( vm, 2 ))
+  if ( be_isinstance( vm, 2 ) )
     {
       const char * cname = be_classname( vm, 2 );
-      if ( !strcmp( cname, "range" )) return( item_range( vm ));
+      if ( !strcmp( cname, "range" ) ) return( item_range( vm ) );
 
-      if ( !strcmp( cname, "list" )) return( item_list( vm ));
+      if ( !strcmp( cname, "list" ) ) return( item_list( vm ) );
     }
   be_return_nil( vm );
 }
@@ -219,7 +219,7 @@ m_size( bvm * vm )
 {
   be_getmember( vm, 1, ".data" );
   list_check_data( vm, 1 );
-  be_pushint( vm, be_data_size( vm, -1 ));
+  be_pushint( vm, be_data_size( vm, -1 ) );
   be_return( vm );
 }
 
@@ -251,7 +251,7 @@ i_hashnext( bvm * vm )
   be_getmember( vm, 1, ".obj" );
   be_getmember( vm, -1, ".data" );
   be_getmember( vm, 1, ".iter" );
-  be_pushbool( vm, be_iter_hasnext( vm, -2 ));
+  be_pushbool( vm, be_iter_hasnext( vm, -2 ) );
   be_return( vm );
 }
 
@@ -273,17 +273,12 @@ m_iter( bvm * vm )
 {
   static const bnfuncinfo members[] =
   {
-    { ".obj",
-      NULL                                                         },
-    { ".iter",
-      NULL                                                         },
-    { "init",
-      i_init                                                       },
-    { "hasnext",
-      i_hashnext                                                   },
-    { "next",
-      i_next                                                       },
-    { NULL,     NULL                                                          }
+    { ".obj",    NULL                                                      },
+    { ".iter",   NULL                                                      },
+    { "init",    i_init                                                    },
+    { "hasnext", i_hashnext                                                },
+    { "next",    i_next                                                    },
+    { NULL,      NULL                                                      }
   };
 
   be_pushclass( vm, "iterator", members );
@@ -299,17 +294,18 @@ m_iter( bvm * vm )
   {
     static const bnfuncinfo members[] =
     {
-      { ".data",    NULL                                                   },
-      { "init",     m_init                                                 },
-      { "tostring", m_tostring                                             },
-      { "append",   m_append                                               },
-      { "insert",   m_insert                                               },
-      { "remove",   m_remove                                               },
-      { "item",     m_item                                                 },
-      { "setitem",  m_setitem                                              },
-      { "size",     m_size                                                 },
-      { "resize",   m_resize                                               },
-      { "iter",     m_iter                                                 },{ NULL, NULL }
+      { ".data",    NULL                                     },
+      { "init",     m_init                                   },
+      { "tostring", m_tostring                               },
+      { "append",   m_append                                 },
+      { "insert",   m_insert                                 },
+      { "remove",   m_remove                                 },
+      { "item",     m_item                                   },
+      { "setitem",  m_setitem                                },
+      { "size",     m_size                                   },
+      { "resize",   m_resize                                 },
+      { "iter",     m_iter                                   },
+      { NULL,       NULL                                     }
     };
 
     be_regclass( vm, "list", members );

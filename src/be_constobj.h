@@ -32,4 +32,4 @@
 
 void        be_const_regclass( bvm * vm, const bclass * c );
 
-#endif
+#endif /* ndef __BE_CONSTOBJ_H */

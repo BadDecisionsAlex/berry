@@ -10,16 +10,16 @@
 #define SHORT_STR_LEN    32
 #define EOS              '\0' /* end of source */
 
-#define lexbuf( lex )        (( lex )->buf.s )
-#define isvalid( lex )       (( lex )->cursor < ( lex )->endbuf )
-#define lgetc( lex )         (( lex )->cursor )
-#define setstr( lex, v )     (( lex )->token.u.s = ( v ))
-#define setint( lex, v )     (( lex )->token.u.i = ( v ))
-#define setreal( lex, v )    (( lex )->token.u.r = ( v ))
-#define match( lex, pattern )     \
-  while ( pattern( lgetc( lex ))) \
-    {                             \
-      save( lex );                \
+#define lexbuf( lex )        ( ( lex )->buf.s )
+#define isvalid( lex )       ( ( lex )->cursor < ( lex )->endbuf )
+#define lgetc( lex )         ( ( lex )->cursor )
+#define setstr( lex, v )     ( ( lex )->token.u.s = ( v ) )
+#define setint( lex, v )     ( ( lex )->token.u.i = ( v ) )
+#define setreal( lex, v )    ( ( lex )->token.u.r = ( v ) )
+#define match( lex, pattern )       \
+  while ( pattern( lgetc( lex ) ) ) \
+    {                               \
+      save( lex );                  \
     }
 
 /* IMPORTANT: This must follow the enum found in be_lexer.h !!! */
@@ -74,7 +74,7 @@ keyword_registe( bvm * vm )
   for ( i = KeyIf; i < n; ++i )
     {
       bstring * s = be_newstr( vm, kwords_tab[i] );
-      be_gc_fix( vm, gc_object( s ));
+      be_gc_fix( vm, gc_object( s ) );
       str_setextra( s, i );
     }
 }
@@ -87,7 +87,7 @@ keyword_unregiste( bvm * vm )
   for ( i = KeyIf; i < n; ++i )
     {
       bstring * s = be_newstr( vm, kwords_tab[i] );
-      be_gc_unfix( vm, gc_object( s ));
+      be_gc_unfix( vm, gc_object( s ) );
     }
 }
 
@@ -96,7 +96,7 @@ next( blexer * lexer )
 {
   struct blexerreader * lr = &lexer->reader;
 
-  if ( !( lr->len-- ))
+  if ( !( lr->len-- ) )
     {
       static const char eos = EOS;
       const char *      s   = lr->readf( lr->data, &lr->len );
@@ -128,7 +128,7 @@ save( blexer * lexer )
     }
   buf->s[buf->len++] = (char) ch;
 
-  return( next( lexer ));
+  return( next( lexer ) );
 }
 
 static bstring *
@@ -136,7 +136,7 @@ buf_tostr( blexer * lexer )
 {
   struct blexerbuf * buf = &lexer->buf;
 
-  return( be_newstrn( lexer->vm, buf->s, buf->len ));
+  return( be_newstrn( lexer->vm, buf->s, buf->len ) );
 }
 
 static int
@@ -155,13 +155,13 @@ static int
 is_letter( int c )
 {
   return( ( c >= 'A' && c <= 'Z' ) || ( c >= 'a' && c <= 'z' )
-        || ( c == '_' ));
+        || ( c == '_' ) );
 }
 
 static int
 is_word( int c )
 {
-  return( is_digit( c ) || is_letter( c ));
+  return( is_digit( c ) || is_letter( c ) );
 }
 
 static int
@@ -201,7 +201,7 @@ read_hex( blexer * lexer, const char * src )
 {
   int c = check2hex( lexer, *src++ );
 
-  return( ( c << 4 ) + check2hex( lexer, *src ));
+  return( ( c << 4 ) + check2hex( lexer, *src ) );
 }
 
 static int
@@ -210,7 +210,7 @@ read_oct( blexer * lexer, const char * src )
   int i, c = 0;
 
   for ( i = 0; i < 3 && is_digit( *src ); ++i ) c = 8 * c + *src++ - '0';
-  if ( i < 3 && !( c == EOS && i == 1 ))
+  if ( i < 3 && !( c == EOS && i == 1 ) )
     {
       be_lexerror(
         lexer,
@@ -312,12 +312,8 @@ skip_newline( blexer * lexer )
   int lc = lgetc( lexer );
 
   next( lexer );
-  if ( is_newline( lgetc( lexer )) && lgetc( lexer ) != lc ) next( lexer ); /*
-                                                                               skip
-                                                                               "\n\r"
-                                                                               or
-                                                                               "\r\n"
-                                                                             */
+  /* skip "\n\r" or "\r\n" */
+  if ( is_newline( lgetc( lexer ) ) && lgetc( lexer ) != lc ) next( lexer );
   lexer->linenumber++;
 
   return( lexer->cursor );
@@ -333,7 +329,7 @@ skip_comment( blexer * lexer )
       do
         {
           mark = c == '-';
-          if ( is_newline( c ))
+          if ( is_newline( c ) )
             {
               c = skip_newline( lexer );
               continue;
@@ -344,7 +340,7 @@ skip_comment( blexer * lexer )
     }
   else /* line comment */
     {
-      while ( !is_newline( lgetc( lexer )) && lgetc( lexer )) next( lexer );
+      while ( !is_newline( lgetc( lexer ) ) && lgetc( lexer ) ) next( lexer );
     }
 }
 
@@ -357,7 +353,7 @@ scan_realexp( blexer * lexer )
     {
       c = save( lexer );
       if ( c == '+' || c == '-' ) c = save( lexer );
-      if ( !is_digit( c )) be_lexerror( lexer, "number error." );
+      if ( !is_digit( c ) ) be_lexerror( lexer, "number error." );
       match( lexer, is_digit );
 
       return( 1 );
@@ -375,11 +371,11 @@ scan_dot_real( blexer * lexer )
 
       return( OptRange );
     }
-  if ( is_digit( lgetc( lexer )))
+  if ( is_digit( lgetc( lexer ) ) )
     {
       match( lexer, is_digit );
       scan_realexp( lexer );
-      setreal( lexer, be_str2real( lexbuf( lexer ), NULL ));
+      setreal( lexer, be_str2real( lexbuf( lexer ), NULL ) );
 
       return( TokenReal );
     }
@@ -393,7 +389,7 @@ scan_hex( blexer * lexer )
   bint res = 0;
   int  dig;
 
-  while (( dig = char2hex( lgetc( lexer ))) >= 0 )
+  while ( ( dig = char2hex( lgetc( lexer ) ) ) >= 0 )
     {
       res = ( res << 4 ) + dig;
       next( lexer );
@@ -409,10 +405,10 @@ scan_numeral( blexer * lexer )
   int        c0 = lgetc( lexer ), c1 = save( lexer );
 
    /* hex: 0[xX][0-9a-fA-F]+ */
-  if ( c0 == '0' && ( c1 == 'x' || c1 == 'X' ))
+  if ( c0 == '0' && ( c1 == 'x' || c1 == 'X' ) )
     {
       next( lexer );
-      setint( lexer, scan_hex( lexer ));
+      setint( lexer, scan_hex( lexer ) );
     }
   else
     {
@@ -430,7 +426,7 @@ scan_numeral( blexer * lexer )
               type = TokenReal;
             }
         }
-      if ( !lexer->cacheType && scan_realexp( lexer )) type = TokenReal;
+      if ( !lexer->cacheType && scan_realexp( lexer ) ) type = TokenReal;
       lexer->buf.s[lexer->buf.len] = '\0';
       if ( type == TokenReal )
         {
@@ -441,7 +437,7 @@ scan_numeral( blexer * lexer )
         }
       else
         {
-          setint( lexer, be_str2int( lexbuf( lexer ), NULL ));
+          setint( lexer, be_str2int( lexbuf( lexer ), NULL ) );
         }
     }
 
@@ -472,13 +468,13 @@ scan_string( blexer * lexer )
   int c, end = lgetc( lexer );
 
   next( lexer ); /* skip '"' or '\'' */
-  while (( c = lgetc( lexer )) != EOS && ( c != end ))
+  while ( ( c = lgetc( lexer ) ) != EOS && ( c != end ) )
     {
       save( lexer );
       if ( c == '\\' ) save( lexer ); /* skip '\\.' */
     }
   tr_string( lexer );
-  setstr( lexer, buf_tostr( lexer ));
+  setstr( lexer, buf_tostr( lexer ) );
   next( lexer ); /* skip '"' or '\'' */
   return( TokenString );
 }
@@ -496,7 +492,7 @@ scan_and( blexer * lexer )
 {
   btokentype op;
 
-  switch ( next( lexer ))
+  switch ( next( lexer ) )
     {
     case '&':
       op = OptAnd;
@@ -520,7 +516,7 @@ scan_or( blexer * lexer )
 {
   btokentype op;
 
-  switch ( next( lexer ))
+  switch ( next( lexer ) )
     {
     case '|':
       op = OptOr;
@@ -542,7 +538,7 @@ scan_or( blexer * lexer )
 static btokentype
 scan_le( blexer * lexer )
 {
-  switch ( next( lexer ))
+  switch ( next( lexer ) )
     {
     case '=':
       next( lexer );
@@ -563,7 +559,7 @@ scan_le( blexer * lexer )
 static btokentype
 scan_ge( blexer * lexer )
 {
-  switch ( next( lexer ))
+  switch ( next( lexer ) )
     {
     case '=':
       next( lexer );
@@ -586,7 +582,7 @@ lexer_next( blexer * lexer )
 {
   for (;; )
     {
-      switch ( lgetc( lexer ))
+      switch ( lgetc( lexer ) )
         {
         case '\r':
         case '\n': /* newline */
@@ -611,23 +607,23 @@ lexer_next( blexer * lexer )
         /* operator */
         case '+':
 
-          return( scan_assign( lexer, OptAddAssign, OptAdd ));
+          return( scan_assign( lexer, OptAddAssign, OptAdd ) );
 
         case '-':
 
-          return( scan_assign( lexer, OptSubAssign, OptSub ));
+          return( scan_assign( lexer, OptSubAssign, OptSub ) );
 
         case '*':
 
-          return( scan_assign( lexer, OptMulAssign, OptMul ));
+          return( scan_assign( lexer, OptMulAssign, OptMul ) );
 
         case '/':
 
-          return( scan_assign( lexer, OptDivAssign, OptDiv ));
+          return( scan_assign( lexer, OptDivAssign, OptDiv ) );
 
         case '%':
 
-          return( scan_assign( lexer, OptModAssign, OptMod ));
+          return( scan_assign( lexer, OptModAssign, OptMod ) );
 
         case '(':
           next( lexer );
@@ -676,7 +672,7 @@ lexer_next( blexer * lexer )
 
         case '^':
 
-          return( scan_assign( lexer, OptXorAssign, OptBitXor ));
+          return( scan_assign( lexer, OptXorAssign, OptBitXor ) );
 
         case '~':
           next( lexer );
@@ -685,19 +681,19 @@ lexer_next( blexer * lexer )
 
         case '&':
 
-          return( scan_and( lexer ));
+          return( scan_and( lexer ) );
 
         case '|':
 
-          return( scan_or( lexer ));
+          return( scan_or( lexer ) );
 
         case '<':
 
-          return( scan_le( lexer ));
+          return( scan_le( lexer ) );
 
         case '>':
 
-          return( scan_ge( lexer ));
+          return( scan_ge( lexer ) );
 
         case '=':
           next( lexer );
@@ -712,11 +708,11 @@ lexer_next( blexer * lexer )
         case '\'':
         case '"':
 
-          return( scan_string( lexer ));
+          return( scan_string( lexer ) );
 
         case '.':
 
-          return( scan_dot_real( lexer ));
+          return( scan_dot_real( lexer ) );
 
         case '0':
         case '1':
@@ -729,10 +725,10 @@ lexer_next( blexer * lexer )
         case '8':
         case '9':
 
-          return( scan_numeral( lexer ));
+          return( scan_numeral( lexer ) );
 
         default:
-          if ( is_letter( lgetc( lexer ))) return( scan_identifier( lexer ));
+          if ( is_letter( lgetc( lexer ) ) ) return( scan_identifier( lexer ) );
 
           be_lexerror(
             lexer,
@@ -826,15 +822,15 @@ be_token2str( bvm * vm, btoken * token )
     case TokenString:
     case TokenId:
 
-      return( str( token->u.s ));
+      return( str( token->u.s ) );
 
     case TokenInteger:
 
-      return( be_pushfstring( vm, "%d", token->u.i ));
+      return( be_pushfstring( vm, "%d", token->u.i ) );
 
     case TokenReal:
 
-      return( be_pushfstring( vm, "%g", token->u.r ));
+      return( be_pushfstring( vm, "%g", token->u.r ) );
 
     default:
 

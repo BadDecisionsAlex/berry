@@ -56,7 +56,7 @@
       struct stat path_stat;
       int         res = stat( path, &path_stat );
 
-      return( res == 0 && S_ISDIR( path_stat.st_mode ));
+      return( res == 0 && S_ISDIR( path_stat.st_mode ) );
     }
 
     static int
@@ -65,7 +65,7 @@
       struct stat path_stat;
       int         res = stat( path, &path_stat );
 
-      return( res == 0 && !S_ISDIR( path_stat.st_mode ));
+      return( res == 0 && !S_ISDIR( path_stat.st_mode ) );
     }
 
     static int
@@ -83,7 +83,7 @@
   {
     char * buf = be_malloc( FNAME_BUF_SIZE );
 
-    if ( getcwd( buf, FNAME_BUF_SIZE )) be_pushstring( vm, buf );
+    if ( getcwd( buf, FNAME_BUF_SIZE ) ) be_pushstring( vm, buf );
     else be_pushstring( vm, "" );
     be_free( buf );
     be_return( vm );
@@ -92,9 +92,9 @@
   static int
   m_chdir( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ) )
       {
-        int res = chdir( be_tostring( vm, 1 ));
+        int res = chdir( be_tostring( vm, 1 ) );
         be_pushbool( vm, res == 0 );
       }
     be_return( vm );
@@ -105,10 +105,10 @@
   {
     int res = 1;
 
-    if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ) )
       {
         #ifdef _WIN32
-          res = mkdir( be_tostring( vm, 1 ));
+          res = mkdir( be_tostring( vm, 1 ) );
         #else
           res = mkdir(
             be_tostring( vm, 1 ),
@@ -126,7 +126,7 @@
     int res = 1;
 
     if ( be_top( vm ) >= 1
-       && be_isstring( vm, 1 )) res = remove( be_tostring( vm, 1 ));
+       && be_isstring( vm, 1 ) ) res = remove( be_tostring( vm, 1 ) );
     be_pushbool( vm, res == 0 );
     be_return( vm );
   }
@@ -138,7 +138,7 @@
       DIR *           dp;
       struct dirent * ep;
 
-      if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ))
+      if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ) )
         dp = opendir(
           be_tostring(
             vm,
@@ -150,10 +150,10 @@
       if ( dp != NULL )
         {
           be_newlist( vm );
-          while (( ep = readdir( dp )) != NULL )
+          while ( ( ep = readdir( dp ) ) != NULL )
             {
               const char * fn = ep->d_name;
-              if ( strcmp( fn, "." ) && strcmp( fn, ".." ))
+              if ( strcmp( fn, "." ) && strcmp( fn, ".." ) )
                 {
                   be_pushstring( vm, fn );
                   be_data_append( vm, -2 );
@@ -178,10 +178,10 @@
       HANDLE          find;
       WIN32_FIND_DATA data;
 
-      if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ))
+      if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ) )
         {
           find = FindFirstFile(
-            be_pushfstring( vm, "%s/*", be_tostring( vm, 1 )),
+            be_pushfstring( vm, "%s/*", be_tostring( vm, 1 ) ),
             &data
                               );
         }
@@ -196,7 +196,7 @@
           do
             {
               const char * fn = data.cFileName;
-              if ( strcmp( fn, "." ) && strcmp( fn, ".." ))
+              if ( strcmp( fn, "." ) && strcmp( fn, ".." ) )
                 {
                   be_pushstring( vm, fn );
                   be_data_append( vm, -2 );
@@ -234,7 +234,7 @@
             be_pop( vm, 1 );
           }
         be_pop( vm, argc );
-        res = system( be_tostring( vm, 1 ));
+        res = system( be_tostring( vm, 1 ) );
       }
     be_pushint( vm, res );
     be_return( vm );
@@ -246,8 +246,8 @@
     const char * path = NULL;
 
     if ( be_top( vm ) >= 1
-       && be_isstring( vm, 1 )) path = be_tostring( vm, 1 );
-    be_pushbool( vm, is_dir( path ));
+       && be_isstring( vm, 1 ) ) path = be_tostring( vm, 1 );
+    be_pushbool( vm, is_dir( path ) );
     be_return( vm );
   }
 
@@ -257,15 +257,15 @@
     const char * path = NULL;
 
     if ( be_top( vm ) >= 1
-       && be_isstring( vm, 1 )) path = be_tostring( vm, 1 );
-    be_pushbool( vm, is_file( path ));
+       && be_isstring( vm, 1 ) ) path = be_tostring( vm, 1 );
+    be_pushbool( vm, is_file( path ) );
     be_return( vm );
   }
 
   static int
   m_splitext( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isstring( vm, 1 ) )
       {
         const char * ptr, * dot, * str = be_tostring( vm, 1 );
         for ( ptr = str; *ptr != '\0' && *ptr == '.'; ++ptr );
@@ -290,43 +290,30 @@
     const char * path = NULL;
 
     if ( be_top( vm ) >= 1
-       && be_isstring( vm, 1 )) path = be_tostring( vm, 1 );
-    be_pushbool( vm, is_exist( path ));
+       && be_isstring( vm, 1 ) ) path = be_tostring( vm, 1 );
+    be_pushbool( vm, is_exist( path ) );
     be_return( vm );
   }
 
   be_native_module_attr_table( path_attr )
   {
-    be_native_module_function( "isdir", m_isdir ), be_native_module_function(
-      "isfile",
-      m_isfile
-                                                                            ),
-    be_native_module_function( "exists", m_exists ), be_native_module_function(
-      "splitext",
-      m_splitext
-                                                                              )
+    be_native_module_function( "isdir", m_isdir ),
+    be_native_module_function( "isfile", m_isfile),
+    be_native_module_function( "exists", m_exists ),
+    be_native_module_function( "splitext", m_splitext)
   };
 
   static be_define_native_module( path, path_attr );
 
   be_native_module_attr_table( os_attr )
   {
-    be_native_module_function( "getcwd", m_getcwd ), be_native_module_function(
-      "chdir",
-      m_chdir
-                                                                              ),
-    be_native_module_function( "mkdir", m_mkdir ), be_native_module_function(
-      "remove",
-      m_remove
-                                                                            ),
-    be_native_module_function(
-      "listdir",
-      m_listdir
-                             ),
-    be_native_module_function( "system", m_system ), be_native_module_module(
-      "path",
-      be_native_module( path )
-                                                                            )
+    be_native_module_function( "getcwd", m_getcwd ),
+     be_native_module_function( "chdir", m_chdir),
+    be_native_module_function( "mkdir", m_mkdir ),
+    be_native_module_function( "remove", m_remove),
+    be_native_module_function( "listdir", m_listdir),
+    be_native_module_function( "system", m_system ),
+    be_native_module_module( "path", be_native_module( path ) )
   };
 
   be_define_native_module( os, os_attr );

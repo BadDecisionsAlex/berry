@@ -140,7 +140,7 @@ mark_map( bvm * vm, bgcobject * obj )
       bmapnode * node;
       bmapiter   iter = be_map_iter();
       gc_setdark( obj );
-      while (( node = be_map_next( map, &iter ) ) != NULL )
+      while ( ( node = be_map_next( map, &iter ) ) != NULL )
         {
           bmapkey * key = &node->key;
           bvalue *  val = &node->value;
@@ -181,9 +181,9 @@ mark_proto( bvm * vm, bgcobject * obj )
                    );
       for ( count = p->nproto; count--;
             ++ptab ) mark_object( vm, gc_object( *ptab ), BE_PROTO );
-      gc_setdark( gc_object( p->name ));
+      gc_setdark( gc_object( p->name ) );
       #if BE_RUNTIME_DEBUG_INFO
-        gc_setdark( gc_object( p->source ));
+        gc_setdark( gc_object( p->source ) );
       #endif
     }
 }
@@ -200,13 +200,13 @@ mark_closure( bvm * vm, bgcobject * obj )
       gc_setdark( obj );
       for (; count--; ++uv )
         {
-          if (( *uv )->refcnt )
+          if ( ( *uv )->refcnt )
             {
               bvalue * v = ( *uv )->value;
-              mark_object( vm, v->v.gc, var_type( v ));
+              mark_object( vm, v->v.gc, var_type( v ) );
             }
         }
-      mark_proto( vm, gc_object( cl->proto ));
+      mark_proto( vm, gc_object( cl->proto ) );
     }
 }
 
@@ -222,10 +222,10 @@ mark_ntvclos( bvm * vm, bgcobject * obj )
       gc_setdark( obj );
       for (; count--; ++uv )
         {
-          if (( *uv )->refcnt )
+          if ( ( *uv )->refcnt )
             {
               bvalue * v = ( *uv )->value;
-              mark_object( vm, v->v.gc, var_type( v ));
+              mark_object( vm, v->v.gc, var_type( v ) );
             }
         }
     }

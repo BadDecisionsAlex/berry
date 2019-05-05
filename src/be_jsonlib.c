@@ -20,8 +20,9 @@
   {
     int c;
 
-    while ((( c = *s ) != '\0' )
-          && (( c == ' ' ) || ( c == '\t' ) || ( c == '\r' ) || ( c == '\n' )))
+    while ( ( ( c = *s ) != '\0' )
+          && ( ( c == ' ' ) || ( c == '\t' ) || ( c == '\r' )
+             || ( c == '\n' ) ) )
       {
         ++s;
       }
@@ -39,7 +40,7 @@
   match_char( const char * json, int ch )
   {
     json = skip_space( json );
-    if ( *json == ch ) return( skip_space( json + 1 ));
+    if ( *json == ch ) return( skip_space( json + 1 ) );
 
     return( NULL );
   }
@@ -47,11 +48,11 @@
   static int
   is_object( bvm * vm, const char * class, int idx )
   {
-    if ( be_isinstance( vm, idx ))
+    if ( be_isinstance( vm, idx ) )
       {
         const char * name = be_classname( vm, idx );
 
-        return( !strcmp( name, class ));
+        return( !strcmp( name, class ) );
       }
 
     return( 0 );
@@ -64,7 +65,7 @@
     const char * s = json + 1; /* skip '"' */
 
      /* get string length "(\\.|[^"])*" */
-    while (( ch = *s ) != '\0' && ch != '"' )
+    while ( ( ch = *s ) != '\0' && ch != '"' )
       {
         ++s;
         if ( ch == '\\' )
@@ -90,7 +91,7 @@
   static const char *
   parser_true( bvm * vm, const char * json )
   {
-    if ( !strncmp( json, "true", 4 ))
+    if ( !strncmp( json, "true", 4 ) )
       {
         be_pushbool( vm, btrue );
 
@@ -103,7 +104,7 @@
   static const char *
   parser_false( bvm * vm, const char * json )
   {
-    if ( !strncmp( json, "false", 5 ))
+    if ( !strncmp( json, "false", 5 ) )
       {
         be_pushbool( vm, bfalse );
 
@@ -116,7 +117,7 @@
   static const char *
   parser_null( bvm * vm, const char * json )
   {
-    if ( !strncmp( json, "null", 4 ))
+    if ( !strncmp( json, "null", 4 ) )
       {
         be_pushnil( vm );
 
@@ -150,15 +151,15 @@
     else if ( ucode < 0x7FF )
       {
          /* unicode: 0080 - 07FF -> utf8: 110xxxxx 10xxxxxx */
-        *dst++ = (char) ((( ucode >> 6 ) & 0x1F ) | 0xC0 );
-        *dst++ = (char) (( ucode & 0x3F ) | 0x80 );
+        *dst++ = (char) ( ( ( ucode >> 6 ) & 0x1F ) | 0xC0 );
+        *dst++ = (char) ( ( ucode & 0x3F ) | 0x80 );
       }
     else
       {
          /* unicode: 0800 - FFFF -> utf8: 1110xxxx 10xxxxxx 10xxxxxx */
-        *dst++ = (char) ((( ucode >> 12 ) & 0x0F ) | 0xE0 );
-        *dst++ = (char) ((( ucode >> 6 ) & 0x03F ) | 0x80 );
-        *dst++ = (char) (( ucode & 0x3F ) | 0x80 );
+        *dst++ = (char) ( ( ( ucode >> 12 ) & 0x0F ) | 0xE0 );
+        *dst++ = (char) ( ( ( ucode >> 6 ) & 0x03F ) | 0x80 );
+        *dst++ = (char) ( ( ucode & 0x3F ) | 0x80 );
       }
 
     return( dst );
@@ -174,7 +175,7 @@
           {
             int    ch;
             char * buf, * dst = buf = be_malloc( len );
-            while (( ch = *json ) != '\0' && ch != '"' )
+            while ( ( ch = *json ) != '\0' && ch != '"' )
               {
                 ++json;
                 if ( ch == '\\' )
@@ -240,7 +241,7 @@
               }
             if ( ch == '"' )
               {
-                be_pushnstring( vm, buf, cast_int( dst - buf ));
+                be_pushnstring( vm, buf, cast_int( dst - buf ) );
                 be_free( buf );
 
                 return( json + 1 ); /* skip '"' */
@@ -292,7 +293,7 @@
             be_pop( vm, 1 ); /* pop map */
             return( NULL );
           }
-        while (( s = match_char( json, ',' )) != NULL )
+        while ( ( s = match_char( json, ',' ) ) != NULL )
           {
             json = parser_field( vm, s );
             if ( json == NULL )
@@ -302,7 +303,7 @@
               }
           }
       }
-    if (( json = match_char( json, '}' )) == NULL )
+    if ( ( json = match_char( json, '}' ) ) == NULL )
       {
         be_pop( vm, 1 ); /* pop map */
         return( NULL );
@@ -328,7 +329,7 @@
           }
         be_data_append( vm, -2 );
         be_pop( vm, 1 ); /* pop value */
-        while (( s = match_char( json, ',' )) != NULL )
+        while ( ( s = match_char( json, ',' ) ) != NULL )
           {
             json = parser_value( vm, s );
             if ( json == NULL )
@@ -340,7 +341,7 @@
             be_pop( vm, 1 ); /* pop value */
           }
       }
-    if (( json = match_char( json, ']' )) == NULL )
+    if ( ( json = match_char( json, ']' ) ) == NULL )
       {
         be_pop( vm, 1 ); /* pop map */
         return( NULL );
@@ -358,26 +359,26 @@
     switch ( *json )
       {
       case '{': /* object */
-        return( parser_object( vm, json ));
+        return( parser_object( vm, json ) );
 
       case '[': /* array */
-        return( parser_array( vm, json ));
+        return( parser_array( vm, json ) );
 
       case '"': /* string */
-        return( parser_string( vm, json ));
+        return( parser_string( vm, json ) );
 
       case 't': /* true */
-        return( parser_true( vm, json ));
+        return( parser_true( vm, json ) );
 
       case 'f': /* false */
-        return( parser_false( vm, json ));
+        return( parser_false( vm, json ) );
 
       case 'n': /* null */
-        return( parser_null( vm, json ));
+        return( parser_null( vm, json ) );
 
       default: /* number */
         if ( *json == '-'
-           || is_digit( *json )) return( be_str2num( vm, json ));
+           || is_digit( *json ) ) return( be_str2num( vm, json ) );
       }
 
     return( NULL );
@@ -386,10 +387,10 @@
   static int
   m_json_load( bvm * vm )
   {
-    if ( be_isstring( vm, 1 ))
+    if ( be_isstring( vm, 1 ) )
       {
         const char * json = be_tostring( vm, 1 );
-        if ( parser_value( vm, json )) be_return( vm );
+        if ( parser_value( vm, json ) ) be_return( vm );
       }
     be_return_nil( vm );
   }
@@ -417,12 +418,12 @@
     be_pushstring( vm, fmt ? "{\n" : "{" );
     be_pushiter( vm, -2 ); /* map iterator use 1 register */
     *indent += fmt;
-    while ( be_iter_hasnext( vm, -3 ))
+    while ( be_iter_hasnext( vm, -3 ) )
       {
         make_indent( vm, -2, fmt ? *indent : 0 );
         be_iter_next( vm, -3 );
          /* key.tostring() */
-        be_pushfstring( vm, "\"%s\"", be_tostring( vm, -2 ));
+        be_pushfstring( vm, "\"%s\"", be_tostring( vm, -2 ) );
         be_strconcat( vm, -5 );
         be_pop( vm, 1 );
         be_pushstring( vm, fmt ? ": " : ":" ); /* add ': ' */
@@ -432,7 +433,7 @@
         json2str( vm, indent, -1, fmt );
         be_strconcat( vm, -5 );
         be_pop( vm, 3 );
-        if ( be_iter_hasnext( vm, -3 ))
+        if ( be_iter_hasnext( vm, -3 ) )
           {
             be_pushstring( vm, fmt ? ",\n" : "," );
             be_strconcat( vm, -3 );
@@ -461,14 +462,14 @@
     be_pushstring( vm, fmt ? "[\n" : "[" );
     be_pushiter( vm, -2 );
     *indent += fmt;
-    while ( be_iter_hasnext( vm, -3 ))
+    while ( be_iter_hasnext( vm, -3 ) )
       {
         make_indent( vm, -2, fmt ? *indent : 0 );
         be_iter_next( vm, -3 );
         json2str( vm, indent, -1, fmt );
         be_strconcat( vm, -4 );
         be_pop( vm, 2 );
-        if ( be_iter_hasnext( vm, -3 ))
+        if ( be_iter_hasnext( vm, -3 ) )
           {
             be_pushstring( vm, fmt ? ",\n" : "," );
             be_strconcat( vm, -3 );
@@ -493,28 +494,26 @@
   static void
   json2str( bvm * vm, int * indent, int idx, int fmt )
   {
-    if ( is_object( vm, "map", idx )) /* convert to json object */
+    if ( is_object( vm, "map", idx ) ) /* convert to json object */
       {
         object_tostr( vm, indent, idx, fmt );
       }
-    else if ( is_object( vm, "list", idx )) /* convert to json array */
+    else if ( is_object( vm, "list", idx ) ) /* convert to json array */
       {
         array_tostr( vm, indent, idx, fmt );
       }
-    else if ( be_isnil( vm, idx )) /* convert to json null */
+    else if ( be_isnil( vm, idx ) ) /* convert to json null */
       {
         be_pushstring( vm, "null" );
-      }
-    else if ( be_isnumber( vm, idx ) || be_isbool( vm, idx )) /* convert to
-                                                                 json number
-                                                                 and boolean */
+      } /* convert to json number and boolean */
+    else if ( be_isnumber( vm, idx ) || be_isbool( vm, idx ) )
       {
         be_tostring( vm, idx );
         be_pushvalue( vm, idx ); /* push to top */
       }
     else /* convert to string and add '"" to string */
       {
-        be_pushfstring( vm, "\"%s\"", be_tostring( vm, idx ));
+        be_pushfstring( vm, "\"%s\"", be_tostring( vm, idx ) );
       }
   }
 

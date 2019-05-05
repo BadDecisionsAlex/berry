@@ -120,31 +120,31 @@ typedef const struct bntvmodule
 #define be_extern_native_module( name ) \
   extern bntvmodule be_native_module( name )
 
-#define be_define_native_module( _name, _attrs )         \
-  bntvmodule be_native_module( _name ) =                 \
-  {                                                      \
-    .name = # _name, .table = ( _attrs ),                \
-    .size = ( sizeof( _attrs ) / sizeof(( _attrs )[0] )) \
+#define be_define_native_module( _name, _attrs )           \
+  bntvmodule be_native_module( _name ) =                   \
+  {                                                        \
+    .name = # _name, .table = ( _attrs ),                  \
+    .size = ( sizeof( _attrs ) / sizeof( ( _attrs )[0] ) ) \
   }
 
 #if !BE_DEBUG
   #if defined( be_assert )
     #undef be_assert
   #endif
-  #define be_assert( expr )    ((void) 0 )
+  #define be_assert( expr )    ( (void) 0 )
 #endif
 
-#define be_writestring( s )    be_fwrite( stdout, s, strlen( s ))
+#define be_writestring( s )    be_fwrite( stdout, s, strlen( s ) )
 #define be_writenewline()      be_fwrite( stdout, "\n", 1 )
 
 #define be_return( vm )        return be_returnvalue( vm )
 #define be_return_nil( vm )    return be_returnnilvalue( vm )
 
 #define be_loadstring( vm, str ) \
-  be_loadbuffer(( vm ), "string", ( str ), strlen( str ))
+  be_loadbuffer( ( vm ), "string", ( str ), strlen( str ) )
 
 #define be_dostring( vm, s ) \
-  ( be_loadstring(( vm ), ( s )) || be_pcall(( vm ), 0 ))
+  ( be_loadstring( ( vm ), ( s ) ) || be_pcall( ( vm ), 0 ) )
 
 bint              be_str2int( const char * str, const char ** endstr );
 breal             be_str2real( const char * str, const char ** endstr );
@@ -242,4 +242,4 @@ int         be_loadfile( bvm * vm, const char * name );
 void        be_loadlibs( bvm * vm );
 void        be_codedump( bvm * vm, int index );
 
-#endif
+#endif /* ndef BERRY_H */

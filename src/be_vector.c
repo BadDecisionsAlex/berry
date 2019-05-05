@@ -12,7 +12,7 @@ be_vector_init( bvector * vector, int size )
   vector->capacity = VECTOR_DEFAULT_SIZE;
   vector->count    = 0;
   vector->size     = size;
-  vector->data     = be_malloc((size_t) vector->capacity * size );
+  vector->data     = be_malloc( (size_t) vector->capacity * size );
   vector->end      = (char *) vector->data - size;
 }
 

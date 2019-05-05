@@ -12,4 +12,4 @@ void              be_val2str( bvm * vm, int index );
 const char *      be_pushvfstr( bvm * vm, const char * format, va_list arg );
 bstring *         be_strindex( bvm * vm, bstring * str, bvalue * idx );
 
-#endif
+#endif /* ndef BE_STRLIB_H */

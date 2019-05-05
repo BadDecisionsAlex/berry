@@ -6,7 +6,7 @@
 
 #define be_code_goiftrue( f, e )     be_code_jumpbool( f, e, 0 )
 #define be_code_goiffalse( f, e )    be_code_jumpbool( f, e, 1 )
-#define be_code_freeregs( f, n )     (( f )->freereg -= (bbyte) ( n ))
+#define be_code_freeregs( f, n )     ( ( f )->freereg -= (bbyte) ( n ) )
 
 int         be_code_allocregs( bfuncinfo * finfo, int count );
 void        be_code_prebinop( bfuncinfo * finfo, int op, bexpdesc * e );
@@ -44,4 +44,4 @@ void          be_code_setsuper( bfuncinfo * finfo,
                                 bexpdesc *  s );
 void        be_code_import( bfuncinfo * finfo, bexpdesc * m, bexpdesc * v );
 
-#endif
+#endif /* ndef BE_CODE_H */

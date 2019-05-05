@@ -31,11 +31,11 @@ typedef struct
 } bcstring;
 
 #define str_len( _s ) \
-  (( _s )->slen == 255 ? cast( blstring *, _s )->llen : ( _s )->slen )
+  ( ( _s )->slen == 255 ? cast( blstring *, _s )->llen : ( _s )->slen )
 
 #define str( _s )                be_str2cstr( _s )
-#define str_extra( _s )          (( _s )->extra )
-#define str_setextra( _s, d )    (( _s )->extra = (bbyte) ( d ))
+#define str_extra( _s )          ( ( _s )->extra )
+#define str_setextra( _s, d )    ( ( _s )->extra = (bbyte) ( d ) )
 
 #include "../generate/be_const_strtab.h"
 
@@ -49,4 +49,4 @@ void              be_gcstrtab( bvm * vm );
 uint32_t          be_strhash( bstring * s );
 const char *      be_str2cstr( bstring * s );
 
-#endif
+#endif /* ndef BE_STRING_H */

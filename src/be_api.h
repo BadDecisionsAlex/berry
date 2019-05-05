@@ -4,4 +4,4 @@
 
 #include "be_object.h"
 
-#endif
+#endif /* ndef BE_API_H */

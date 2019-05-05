@@ -25,7 +25,7 @@
 #define gc_isdark( o )        gc_ismark( ( o ), GC_DARK )
 
 #define gc_setmark( o, m )           \
-  if ( !gc_isconst( o ))             \
+  if ( !gc_isconst( o ) )            \
     {                                \
       ( o )->marked &= ~0x03;        \
       ( o )->marked |= ( m ) & 0x03; \
@@ -62,4 +62,4 @@ void             be_gc_unfix( bvm * vm, bgcobject * obj );
 void             be_gc_collect( bvm * vm );
 void             be_gc_auto( bvm * vm );
 
-#endif
+#endif /* ndef BE_GC_H */

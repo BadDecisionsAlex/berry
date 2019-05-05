@@ -12,8 +12,8 @@ l_assert( bvm * vm )
 {
   /* assertion fails when there is no argument
    * or the first argument is nil or false. */
-  if ( !be_top( vm )
-     || !be_tobool( vm, 1 ) ) be_pusherror( vm, "assert failed!" );
+  if ( !be_top( vm ) || !be_tobool( vm, 1 ) ) be_pusherror( vm,
+                                                            "assert failed!" );
   be_return_nil( vm );
 }
 

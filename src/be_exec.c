@@ -10,8 +10,8 @@
 
 #define FILE_BUFFER_SIZE    256
 
-#define exec_try( j )      if ( setjmp(( j )->b ) == 0 )
-#define exec_throw( j )    longjmp(( j )->b, 1 )
+#define exec_try( j )      if ( setjmp( ( j )->b ) == 0 )
+#define exec_throw( j )    longjmp( ( j )->b, 1 )
 
 #define STR( s )           # s
 
@@ -167,14 +167,14 @@ be_loadbuffer( bvm *        vm,
   sbuf.s   = buffer;
   sbuf.len = length;
 
-  return( be_protectedparser( vm, name, _sgets, &sbuf ));
+  return( be_protectedparser( vm, name, _sgets, &sbuf ) );
 }
 
 int
 be_loadfile( bvm * vm, const char * name )
 {
   int res = BE_IO_ERROR;
-  struct filebuf * fbuf = be_malloc( sizeof( struct filebuf ));
+  struct filebuf * fbuf = be_malloc( sizeof( struct filebuf ) );
 
   fbuf->fp = fopen( name, "r" );
   if ( fbuf->fp )
@@ -213,7 +213,7 @@ be_protectedcall( bvm * vm, bvalue * v, int argc )
   res    = be_execprotected( vm, m_pcall, &s );
   if ( res ) /* recovery call stack */
     {
-      int idx = cast_int( vm->top - ( vm->stack + reg ));
+      int idx = cast_int( vm->top - ( vm->stack + reg ) );
       vm->reg = vm->stack + reg;
       be_moveto( vm, idx, top - reg + 1 ); /* copy error information */
       vm->top = vm->stack + top + 1;
@@ -289,7 +289,7 @@ be_stack_expansion( bvm * vm, int n )
     {
        /* ensure the stack is enough when generating error messages. */
       stack_resize( vm, size + 10 );
-      be_pusherror( vm, STACK_OVER_MSG( BE_STACK_TOTAL_MAX ));
+      be_pusherror( vm, STACK_OVER_MSG( BE_STACK_TOTAL_MAX ) );
     }
   stack_resize( vm, size + n );
 }

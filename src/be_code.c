@@ -8,15 +8,15 @@
 #include "be_vector.h"
 #include <stdio.h>
 
-#define min( a, b )                  (( a ) < ( b ) ? ( a ) : ( b ))
+#define min( a, b )                  ( ( a ) < ( b ) ? ( a ) : ( b ) )
 #define exp2anyreg( f, e )           exp2reg( f, e, ( f )->freereg )
 #define var2anyreg( f, e )           var2reg( f, e, ( f )->freereg )
-#define hasjump( e )                 (( e )->t != ( e )->f || ( e )->not )
+#define hasjump( e )                 ( ( e )->t != ( e )->f || ( e )->not )
 #define code_bool( f, r, b, j )      codeABC( f, OP_LDBOOL, r, b, j )
 #define code_move( f, a, b )         codeABC( f, OP_MOVE, a, b, 0 )
 #define code_call( f, a, b )         codeABC( f, OP_CALL, a, b, 0 )
 #define code_getmbr( f, a, b, c )    codeABC( f, OP_GETMBR, a, b, c )
-#define jumpboolop( e, b )           (( b ) ^ ( e )->not ? OP_JMPT : OP_JMPF )
+#define jumpboolop( e, b )           ( ( b ) ^ ( e )->not ? OP_JMPT : OP_JMPF )
 
 static int        var2reg( bfuncinfo * finfo, bexpdesc * e, int dst );
 
@@ -59,13 +59,13 @@ codeABC( bfuncinfo * finfo, bopcode op, int a, int b, int c )
 {
   return( codeinst(
             finfo, ISET_OP( op ) | ISET_RA( a ) | ISET_RKB( b ) | ISET_RKC( c )
-                  ));
+                  ) );
 }
 
 static int
 codeABx( bfuncinfo * finfo, bopcode op, int a, int bx )
 {
-  return( codeinst( finfo, ISET_OP( op ) | ISET_RA( a ) | ISET_Bx( bx )));
+  return( codeinst( finfo, ISET_OP( op ) | ISET_RA( a ) | ISET_Bx( bx ) ) );
 }
 
 static void
@@ -130,12 +130,8 @@ patchlistaux( bfuncinfo * finfo, int list, int vtarget, int dtarget )
   while ( list != NO_JUMP )
     {
       int next = get_jump( finfo, list );
-      if ( isjumpbool( finfo, list )) setjump( finfo, list, dtarget );                                                                                                                                                                                                                                                                                                      /*
-                                                                                                                                                                                                                                                                                                                                                                               jump
-                                                                                                                                                                                                                                                                                                                                                                               to
-                                                                                                                                                                                                                                                                                                                                                                               default
-                                                                                                                                                                                                                                                                                                                                                                               target
-                                                                                                                                                                                                                                                                                                                                                                             */
+      /* jump to default target */
+      if ( isjumpbool( finfo, list ) ) setjump( finfo, list, dtarget );
       else setjump( finfo, list, vtarget );
       list = next;
     }
@@ -155,7 +151,7 @@ appendjump( bfuncinfo * finfo, bopcode op, bexpdesc * e )
   int reg = e ? var2anyreg( finfo, e ) : 0;
 
   finfo->jpc = NO_JUMP;
-  if ( isK( reg ))
+  if ( isK( reg ) )
     {
       reg = be_code_allocregs( finfo, 1 );
       code_move( finfo, reg, e->v.idx );
@@ -171,7 +167,7 @@ appendjump( bfuncinfo * finfo, bopcode op, bexpdesc * e )
 int
 be_code_jump( bfuncinfo * finfo )
 {
-  return( appendjump( finfo, OP_JMP, NULL ));
+  return( appendjump( finfo, OP_JMP, NULL ) );
 }
 
 void
@@ -205,7 +201,7 @@ be_code_conjump( bfuncinfo * finfo, int * list, int jmp )
   else
     {
       int next, l = *list;
-      while (( next = ( get_jump( finfo, l ))) != NO_JUMP ) l = next;
+      while ( ( next = ( get_jump( finfo, l ) ) ) != NO_JUMP ) l = next;
       setjump( finfo, l, jmp );
     }
 }
@@ -242,11 +238,12 @@ findconst( bfuncinfo * finfo, bexpdesc * e )
 {
   int i, count = be_vector_count( &finfo->kvec );
 
-  /* if the constant table is too large, the lookup
-   * operation will become very time consuming.
-   * so only search the constant table for the
-   * previous value.
-   **/
+  /*
+     If the constant table is too large, the lookup
+     operation will become very time consuming.
+     so only search the constant table for the
+     previous value.
+   */
   count = count < 50 ? count : 50;
   for ( i = 0; i < count; ++i )
     {
@@ -264,7 +261,7 @@ findconst( bfuncinfo * finfo, bexpdesc * e )
           break;
 
         case ETSTRING:
-          if ( var_isstr( k ) && be_eqstr( k->v.p, e->v.s )) return( i );
+          if ( var_isstr( k ) && be_eqstr( k->v.p, e->v.s ) ) return( i );
 
           break;
 
@@ -372,7 +369,7 @@ var2reg( bfuncinfo * finfo, bexpdesc * e, int dst )
         }
       else
         {
-          return( exp2const( finfo, e ));
+          return( exp2const( finfo, e ) );
         }
 
       break;
@@ -388,7 +385,7 @@ var2reg( bfuncinfo * finfo, bexpdesc * e, int dst )
     case ETREAL:
     case ETSTRING:
 
-      return( exp2const( finfo, e ));
+      return( exp2const( finfo, e ) );
 
     case ETPROTO:
       code_closure( finfo, e->v.p, dst );
@@ -433,7 +430,7 @@ exp2reg( bfuncinfo * finfo, bexpdesc * e, int dst )
 {
   int reg = var2reg( finfo, e, dst );
 
-  if ( hasjump( e ))
+  if ( hasjump( e ) )
     {
       int pcf = NO_JUMP;  /* position of an eventual LOAD false */
       int pct = NO_JUMP;  /* position of an eventual LOAD true */
@@ -628,11 +625,11 @@ be_code_unop( bfuncinfo * finfo, int op, bexpdesc * e )
     }
 
     case OptFlip: /* do nothing */
-      return( code_flip( finfo, e ));
+      return( code_flip( finfo, e ) );
 
     case OptSub:
 
-      return( code_neg( finfo, e ));
+      return( code_neg( finfo, e ) );
 
     default:
       break;
@@ -647,7 +644,7 @@ setsupvar( bfuncinfo * finfo, bopcode op, bexpdesc * e1, bexpdesc * e2 )
   int src = exp2anyreg( finfo, e2 );
 
   free_expreg( finfo, e2 );
-  if ( isK( src )) /* move const to register */
+  if ( isK( src ) ) /* move const to register */
     {
       code_move( finfo, finfo->freereg, src );
       src = finfo->freereg;
@@ -663,7 +660,7 @@ setsfxvar( bfuncinfo * finfo, bopcode op, bexpdesc * e1, bexpdesc * e2 )
 
   free_expreg( finfo, e2 );
   free_suffix( finfo, e1 );
-  if ( isK( obj )) /* move const to register */
+  if ( isK( obj ) ) /* move const to register */
     {
       code_move( finfo, finfo->freereg, obj );
       obj = finfo->freereg;
@@ -814,9 +811,9 @@ be_code_localobject( bfuncinfo * finfo, int dst )
 {
   int src = newconst( finfo, NULL );
 
-  code_move( finfo, dst, setK( src ));
+  code_move( finfo, dst, setK( src ) );
 
-  return( be_vector_end( &finfo->kvec ));
+  return( be_vector_end( &finfo->kvec ) );
 }
 
 void

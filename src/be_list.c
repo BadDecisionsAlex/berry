@@ -36,7 +36,7 @@ be_list_index( blist * list, int index )
   if ( index < 0 ) index = list->count + index;
   if ( index < 0 || index >= list->count ) return( NULL );
 
-  return( be_list_at( list, index ));
+  return( be_list_at( list, index ) );
 }
 
 bvalue *
@@ -48,7 +48,7 @@ be_list_append( blist * list, bvalue * value )
     {
       list->capacity <<= 1; /* capacity *= 2 */
       list->data
-        = be_realloc( list->data, list->capacity * sizeof( bvalue ));
+        = be_realloc( list->data, list->capacity * sizeof( bvalue ) );
     }
   slot = list->data + list->count++;
   if ( value != NULL ) *slot = *value;
@@ -69,7 +69,7 @@ be_list_insert( blist * list, int index, bvalue * value )
     {
       list->capacity <<= 1; /* capacity *= 2 */
       list->data
-        = be_realloc( list->data, list->capacity * sizeof( bvalue ));
+        = be_realloc( list->data, list->capacity * sizeof( bvalue ) );
     }
   data = list->data;
   for ( i = ++list->count; i > index; --i ) data[i] = data[i - 1];
@@ -107,7 +107,7 @@ be_list_resize( blist * list, int count )
         {
           bvalue * v, * end;
           list->capacity = newcap;
-          list->data     = be_realloc( list->data, newcap * sizeof( bvalue ));
+          list->data     = be_realloc( list->data, newcap * sizeof( bvalue ) );
           v   = list->data + oldcount;
           end = list->data + list->count;
           while ( v < end ) var_setnil( v++ );

@@ -10,9 +10,8 @@ try_return( bvm * vm, const char * line )
 
   be_pushfstring( vm, "return (%s)", line );
   line = be_tostring( vm, -1 );
-  res  = be_loadbuffer( vm, "stdin", line, strlen( line )); /* compile line */
-  be_remove( vm, -2 );                                      /* remove source
-                                                               string */
+  res  = be_loadbuffer( vm, "stdin", line, strlen( line ) ); /* compile line */
+  be_remove( vm, -2 ); /* remove source string */
   return( res );
 }
 
@@ -22,7 +21,7 @@ is_multline( bvm * vm )
   const char * msg = be_tostring( vm, -1 );
   size_t       len = strlen( msg );
 
-  if ( len > 5 ) return( !strcmp( msg + len - 5, "'EOS'" ));
+  if ( len > 5 ) return( !strcmp( msg + len - 5, "'EOS'" ) );
 
   return( 0 );
 }
@@ -40,8 +39,8 @@ compile( bvm * vm, const char * line, breadline getl )
         {
           const char * src = be_tostring( vm, -1 );
            /* compile source line */
-          res = be_loadbuffer( vm, "stdin", src, strlen( src ));
-          if ( !res || !is_multline( vm ))
+          res = be_loadbuffer( vm, "stdin", src, strlen( src ) );
+          if ( !res || !is_multline( vm ) )
             {
               be_remove( vm, -2 );
 
@@ -63,36 +62,36 @@ be_repl( bvm * vm, breadline getl )
 {
   const char * line;
 
-  while (( line = getl( "> " )) != NULL )
+  while ( ( line = getl( "> " ) ) != NULL )
     {
-      if ( compile( vm, line, getl ))
+      if ( compile( vm, line, getl ) )
         {
-          be_writestring( be_tostring( vm, -1 )); /* some error */
+          be_writestring( be_tostring( vm, -1 ) ); /* some error */
           be_writenewline();
           be_pop( vm, 1 );
         }
       else
         {
-          switch ( be_pcall( vm, 0 ))
+          switch ( be_pcall( vm, 0 ) )
             {
             case BE_OK:
-              if ( !be_isnil( vm, -1 ))
+              if ( !be_isnil( vm, -1 ) )
                 {
-                  be_writestring( be_tostring( vm, -1 ));
+                  be_writestring( be_tostring( vm, -1 ) );
                   be_writenewline();
                 }
               be_pop( vm, 1 );
               break;
 
             case BE_EXEC_ERROR: /* vm run error */
-              be_writestring( be_tostring( vm, -1 ));
+              be_writestring( be_tostring( vm, -1 ) );
               be_writenewline();
               be_pop( vm, 2 );
               break;
 
             case BE_EXIT:
 
-              return( be_toindex( vm, -1 ));
+              return( be_toindex( vm, -1 ) );
 
             case BE_MALLOC_FAIL:
 

@@ -18,4 +18,4 @@ bmodule *      be_module_load( bvm * vm, bstring * path, bvalue * dst );
 void           be_module_delete( bvm * vm, bmodule * module );
 bvalue *       be_module_attr( bmodule * module, bstring * attr );
 
-#endif
+#endif /* ndef BE_MODULE_H */

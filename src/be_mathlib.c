@@ -19,10 +19,10 @@
   static int
   m_abs( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( fabs ) ( x ));
+        be_pushreal( vm, mathfunc( fabs ) ( x ) );
       }
     else
       {
@@ -34,10 +34,10 @@
   static int
   m_ceil( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( ceil ) ( x ));
+        be_pushreal( vm, mathfunc( ceil ) ( x ) );
       }
     else
       {
@@ -49,10 +49,10 @@
   static int
   m_floor( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( floor ) ( x ));
+        be_pushreal( vm, mathfunc( floor ) ( x ) );
       }
     else
       {
@@ -64,10 +64,10 @@
   static int
   m_sin( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( sin ) ( x ));
+        be_pushreal( vm, mathfunc( sin ) ( x ) );
       }
     else
       {
@@ -79,10 +79,10 @@
   static int
   m_cos( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( cos ) ( x ));
+        be_pushreal( vm, mathfunc( cos ) ( x ) );
       }
     else
       {
@@ -94,10 +94,10 @@
   static int
   m_tan( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( tan ) ( x ));
+        be_pushreal( vm, mathfunc( tan ) ( x ) );
       }
     else
       {
@@ -109,10 +109,10 @@
   static int
   m_asin( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( asin ) ( x ));
+        be_pushreal( vm, mathfunc( asin ) ( x ) );
       }
     else
       {
@@ -124,10 +124,10 @@
   static int
   m_acos( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( acos ) ( x ));
+        be_pushreal( vm, mathfunc( acos ) ( x ) );
       }
     else
       {
@@ -139,10 +139,10 @@
   static int
   m_atan( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( atan ) ( x ));
+        be_pushreal( vm, mathfunc( atan ) ( x ) );
       }
     else
       {
@@ -154,10 +154,10 @@
   static int
   m_sinh( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( sinh ) ( x ));
+        be_pushreal( vm, mathfunc( sinh ) ( x ) );
       }
     else
       {
@@ -169,10 +169,10 @@
   static int
   m_cosh( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( cosh ) ( x ));
+        be_pushreal( vm, mathfunc( cosh ) ( x ) );
       }
     else
       {
@@ -184,10 +184,10 @@
   static int
   m_tanh( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( tanh ) ( x ));
+        be_pushreal( vm, mathfunc( tanh ) ( x ) );
       }
     else
       {
@@ -199,10 +199,10 @@
   static int
   m_sqrt( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( sqrt ) ( x ));
+        be_pushreal( vm, mathfunc( sqrt ) ( x ) );
       }
     else
       {
@@ -214,10 +214,10 @@
   static int
   m_exp( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( exp ) ( x ));
+        be_pushreal( vm, mathfunc( exp ) ( x ) );
       }
     else
       {
@@ -229,10 +229,10 @@
   static int
   m_log( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( log ) ( x ));
+        be_pushreal( vm, mathfunc( log ) ( x ) );
       }
     else
       {
@@ -244,10 +244,10 @@
   static int
   m_log10( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, mathfunc( log10 ) ( x ));
+        be_pushreal( vm, mathfunc( log10 ) ( x ) );
       }
     else
       {
@@ -259,10 +259,10 @@
   static int
   m_deg( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, x * (breal) ( 180.0 / M_PI ));
+        be_pushreal( vm, x * (breal) ( 180.0 / M_PI ) );
       }
     else
       {
@@ -274,10 +274,10 @@
   static int
   m_rad( bvm * vm )
   {
-    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ))
+    if ( be_top( vm ) >= 1 && be_isnumber( vm, 1 ) )
       {
         breal x = be_toreal( vm, 1 );
-        be_pushreal( vm, x * (breal) ( M_PI / 180.0 ));
+        be_pushreal( vm, x * (breal) ( M_PI / 180.0 ) );
       }
     else
       {
@@ -289,11 +289,11 @@
   static int
   m_pow( bvm * vm )
   {
-    if ( be_top( vm ) >= 2 && be_isnumber( vm, 1 ) && be_isnumber( vm, 2 ))
+    if ( be_top( vm ) >= 2 && be_isnumber( vm, 1 ) && be_isnumber( vm, 2 ) )
       {
         breal x = be_toreal( vm, 1 );
         breal y = be_toreal( vm, 2 );
-        be_pushreal( vm, mathfunc( pow ) ( x, y ));
+        be_pushreal( vm, mathfunc( pow ) ( x, y ) );
       }
     else
       {
@@ -305,76 +305,42 @@
   static int
   m_srand( bvm * vm )
   {
-    if ( be_top( vm ) >= 1
-       && be_isint( vm, 1 )) srand((unsigned int) be_toint( vm, 1 ));
+    if ( be_top( vm ) >= 1 && be_isint( vm, 1 ) )
+      srand( (unsigned int) be_toint( vm, 1 ) );
     be_return_nil( vm );
   }
 
   static int
   m_rand( bvm * vm )
   {
-    be_pushint( vm, rand());
+    be_pushint( vm, rand() );
     be_return( vm );
   }
 
   be_native_module_attr_table( attr_table )
   {
-    be_native_module_function( "abs", m_abs ), be_native_module_function(
-      "ceil",
-      m_ceil
-                                                                        ),
-    be_native_module_function( "floor", m_floor ), be_native_module_function(
-      "sin",
-      m_sin
-                                                                            ),
-    be_native_module_function(
-      "cos",
-      m_cos
-                             ),
-    be_native_module_function( "tan", m_tan ), be_native_module_function(
-      "asin",
-      m_asin
-                                                                        ),
-    be_native_module_function(
-      "acos",
-      m_acos
-                             ),
-    be_native_module_function( "atan", m_atan ), be_native_module_function(
-      "sinh",
-      m_sinh
-                                                                          ),
-    be_native_module_function(
-      "cosh",
-      m_cosh
-                             ),
-    be_native_module_function( "tanh", m_tanh ), be_native_module_function(
-      "sqrt",
-      m_sqrt
-                                                                          ),
-    be_native_module_function(
-      "exp",
-      m_exp
-                             ),
-    be_native_module_function( "log", m_log ), be_native_module_function(
-      "log10",
-      m_log10
-                                                                        ),
-    be_native_module_function(
-      "deg",
-      m_deg
-                             ),
-    be_native_module_function( "rad", m_rad ), be_native_module_function(
-      "pow",
-      m_pow
-                                                                        ),
-    be_native_module_function(
-      "srand",
-      m_srand
-                             ),
-    be_native_module_function( "rand", m_rand ), be_native_module_real(
-      "pi",
-      M_PI
-                                                                      )
+    be_native_module_function( "abs", m_abs ),
+    be_native_module_function( "ceil", m_ceil),
+    be_native_module_function( "floor", m_floor ),
+    be_native_module_function( "sin", m_sin),
+    be_native_module_function( "cos", m_cos),
+    be_native_module_function( "tan", m_tan ),
+    be_native_module_function( "asin", m_asin),
+    be_native_module_function( "acos", m_acos),
+    be_native_module_function( "atan", m_atan ),
+    be_native_module_function( "sinh", m_sinh),
+    be_native_module_function( "cosh", m_cosh),
+    be_native_module_function( "tanh", m_tanh ),
+    be_native_module_function( "sqrt", m_sqrt),
+    be_native_module_function( "exp", m_exp),
+    be_native_module_function( "log", m_log ),
+    be_native_module_function( "log10", m_log10),
+    be_native_module_function( "deg", m_deg),
+    be_native_module_function( "rad", m_rad ),
+    be_native_module_function( "pow", m_pow),
+    be_native_module_function( "srand", m_srand),
+    be_native_module_function( "rand", m_rand ),
+    be_native_module_real( "pi", M_PI)
   };
 
   be_define_native_module( math, attr_table );

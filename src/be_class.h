@@ -8,14 +8,14 @@
 #define MT_METHOD        BE_CLOSURE
 #define MT_PRIMMETHOD    BE_NTVFUNC
 
-#define be_class_name( cl )                (( cl )->name )
-#define be_class_members( cl )             (( cl )->members )
-#define be_class_super( cl )               (( cl )->super )
-#define be_class_setsuper( self, sup )     (( self )->super = ( sup ))
-#define be_instance_name( obj )            (( obj )->class->name )
-#define be_instance_members( obj )         (( obj )->members )
-#define be_instance_member_count( obj )    (( obj )->class->nvar )
-#define be_instance_super( obj )           (( obj )->super )
+#define be_class_name( cl )                ( ( cl )->name )
+#define be_class_members( cl )             ( ( cl )->members )
+#define be_class_super( cl )               ( ( cl )->super )
+#define be_class_setsuper( self, sup )     ( ( self )->super = ( sup ) )
+#define be_instance_name( obj )            ( ( obj )->class->name )
+#define be_instance_members( obj )         ( ( obj )->members )
+#define be_instance_member_count( obj )    ( ( obj )->class->nvar )
+#define be_instance_super( obj )           ( ( obj )->super )
 
 struct bclass
 {
@@ -49,4 +49,4 @@ int        be_instance_setmember( binstance * obj,
                                   bstring *   name,
                                   bvalue *    src );
 
-#endif
+#endif /* ndef BE_CLASS_H */

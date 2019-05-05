@@ -8,4 +8,4 @@ typedef const char * (* breadline)( const char * prompt );
 
 int        be_repl( bvm * vm, breadline getl );
 
-#endif
+#endif /* ndef BE_REPL_H */

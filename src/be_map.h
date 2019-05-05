@@ -30,7 +30,7 @@ struct bmap
 typedef bmapnode * bmapiter;
 
 #define be_map_iter()          NULL
-#define be_map_count( map )    (( map )->count )
+#define be_map_count( map )    ( ( map )->count )
 #define be_map_size( map )     ( map->size )
 
 bmap *          be_map_new( bvm * vm );
@@ -45,4 +45,4 @@ bmapnode *      be_map_next( bmap * map, bmapiter * iter );
 bvalue          be_map_key2value( bmapnode * node );
 void            be_map_release( bvm * vm, bmap * map );
 
-#endif
+#endif /* ndef BE_MAP_H */

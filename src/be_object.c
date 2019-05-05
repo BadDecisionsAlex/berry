@@ -4,7 +4,7 @@
 const char *
 be_vtype2str( bvalue * v )
 {
-  switch ( var_type( v ))
+  switch ( var_type( v ) )
     {
     case BE_NIL:
 

@@ -7,4 +7,4 @@
 void        be_dprintcode( bclosure * cl );
 void        be_debug_ins_info( bvm * vm );
 
-#endif
+#endif /* ndef BE_DEBUG_H */

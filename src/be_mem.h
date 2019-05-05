@@ -9,4 +9,4 @@ void          be_free( void * p );
 void *        be_realloc( void * p, size_t size );
 size_t        be_mcount( void );
 
-#endif
+#endif /* ndef BE_MEM_H */

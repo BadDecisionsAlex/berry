@@ -127,4 +127,4 @@ int               be_lexer_scan_next( blexer * lexer );
 const char *      be_token2str( bvm * vm, btoken * token );
 const char *      be_tokentype2str( btokentype type );
 
-#endif
+#endif /* ndef BE_LEXER_H */

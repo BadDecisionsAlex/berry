@@ -27,34 +27,34 @@
   ( binary_op_prio_tab[cast_int( op ) \
                        - OptAdd] )
 
-#define scan_next_token( parser )    ( be_lexer_scan_next( &( parser )->lexer ))
-#define next_token( parser )         (( parser )->lexer.token )
+#define scan_next_token( parser )    ( be_lexer_scan_next( &( parser )->lexer ) )
+#define next_token( parser )         ( ( parser )->lexer.token )
 #define next_type( parser )          ( next_token( parser ).type )
-#define max( a, b )                  (( a ) > ( b ) ? ( a ) : ( b ))
+#define max( a, b )                  ( ( a ) > ( b ) ? ( a ) : ( b ) )
 #define token2str( parser ) \
   be_token2str(             \
     ( parser )->vm,         \
     &next_token( parser )   \
               )
 
-#define upval_index( v )      (( v ) & 0xFF )
-#define upval_target( v )     ((bbyte) ((( v ) >> 8 ) & 0xFF ))
-#define upval_instack( v )    ((bbyte) ((( v ) >> 16 ) != 0 ))
-#define upval_desc( i, t, s )                \
-  ((( i ) & 0xFF ) | ((( t ) & 0xFF ) << 8 ) \
-   | ((( s ) != 0 ) << 16 ))
+#define upval_index( v )      ( ( v ) & 0xFF )
+#define upval_target( v )     ( (bbyte) ( ( ( v ) >> 8 ) & 0xFF ) )
+#define upval_instack( v )    ( (bbyte) ( ( ( v ) >> 16 ) != 0 ) )
+#define upval_desc( i, t, s )                    \
+  ( ( ( i ) & 0xFF ) | ( ( ( t ) & 0xFF ) << 8 ) \
+    | ( ( ( s ) != 0 ) << 16 ) )
 
 #define stack_save( parser ) \
-  (( parser )->vm->top       \
-   - ( parser )->vm->stack )
+  ( ( parser )->vm->top      \
+    - ( parser )->vm->stack )
 #define stack_reset( parser, s ) \
-  (( parser )->vm->top           \
-     = ( parser )->vm->stack + ( s ))
+  ( ( parser )->vm->top          \
+      = ( parser )->vm->stack + ( s ) )
 
 #define parser_error( p, msg )    be_lexerror( &( p )->lexer, msg )
 
 #define push_error( parser, ... ) \
-  parser_error( parser, be_pushfstring( parser->vm, __VA_ARGS__ ))
+  parser_error( parser, be_pushfstring( parser->vm, __VA_ARGS__ ) )
 
 typedef struct
 {
@@ -72,8 +72,8 @@ static void        sub_expr( bparser * parser, bexpdesc * e, int prio );
 
 static const int binary_op_prio_tab[] =
 {
-  5,    5,  4,  4,  4,      /* + - * / % */
-  11,  11, 12, 12, 11,11,        /* < <= == != > >= */
+  5,    5,  4,  4,  4,           /*  + - * / %            */
+  11,  11, 12, 12, 11,11,        /*  < <= == != > >=      */
   7,    9,  8,  6,  6,10, 13, 14 /*  & | ^ << >> .. && || */
 };
 
@@ -184,9 +184,9 @@ begin_func( bparser * parser, bfuncinfo * finfo, bblockinfo * binfo )
   bvm *    vm    = parser->vm;
   bproto * proto = be_newproto( vm );
 
-  be_vector_init( &finfo->code, sizeof( binstruction ));
-  be_vector_init( &finfo->kvec, sizeof( bvalue ));
-  be_vector_init( &finfo->pvec, sizeof( bproto * ));
+  be_vector_init( &finfo->code, sizeof( binstruction ) );
+  be_vector_init( &finfo->kvec, sizeof( bvalue ) );
+  be_vector_init( &finfo->pvec, sizeof( bproto * ) );
   finfo->prev    = parser->finfo;
   finfo->local   = be_list_new( vm );
   finfo->upval   = be_map_new( vm );
@@ -203,7 +203,7 @@ begin_func( bparser * parser, bfuncinfo * finfo, bblockinfo * binfo )
   proto->ktab    = be_vector_data( &finfo->kvec );
   proto->ptab    = be_vector_data( &finfo->pvec );
   #if BE_RUNTIME_DEBUG_INFO
-    be_vector_init( &finfo->linevec, sizeof( blineinfo ));
+    be_vector_init( &finfo->linevec, sizeof( blineinfo ) );
     proto->source   = be_newstr( vm, parser->lexer.fname );
     proto->lineinfo = be_vector_data( &finfo->linevec );
     finfo->lexer    = &parser->lexer;
@@ -229,7 +229,7 @@ setupvals( bfuncinfo * finfo )
       bmap *       map    = finfo->upval;
       bmapiter     iter   = be_map_iter();
       bupvaldesc * upvals = be_malloc( sizeof( bupvaldesc ) * nupvals );
-      while (( node = be_map_next( map, &iter )) != NULL )
+      while ( ( node = be_map_next( map, &iter ) ) != NULL )
         {
           uint32_t v   = (uint32_t) node->value.v.i;
           int      idx = upval_index( v );
@@ -288,14 +288,8 @@ static btokentype
 get_unary_op( bparser * parser )
 {
   btokentype op = next_type( parser );
-
-  if ( op == OptSub || op == OptNot || op == OptFlip ) return( op ); /*
-                                                                        operator
-                                                                        'negative'
-                                                                        'not'
-                                                                        and
-                                                                        'flip'
-                                                                      */
+  /* operator 'negative' 'not' and 'flip' */
+  if ( op == OptSub || op == OptNot || op == OptFlip ) return( op );
 
   return( OP_NOT_UNARY );
 }
@@ -338,7 +332,7 @@ find_localvar( bfuncinfo * finfo, bstring * s )
   bvalue * var = be_list_data( finfo->local );
 
   for ( i = 0; i < count; i++ )
-    if ( be_eqstr( var[i].v.s, s )) return( i );
+    if ( be_eqstr( var[i].v.s, s ) ) return( i );
 
 
 
@@ -368,7 +362,7 @@ find_upval( bfuncinfo * finfo, bstring * s )
 {
   bvalue * desc = be_map_findstr( finfo->upval, s );
 
-  if ( desc ) return( upval_index( desc->v.i ));
+  if ( desc ) return( upval_index( desc->v.i ) );
 
   return( -1 );
 }
@@ -394,7 +388,7 @@ new_upval( bfuncinfo * finfo, bstring * name, bexpdesc * var )
     mark_upval( finfo, target );
   index = be_map_count( finfo->upval );
   desc  = be_map_insertstr( finfo->upval, name, NULL );
-  var_setint( desc, upval_desc( index, target, instack ));
+  var_setint( desc, upval_desc( index, target, instack ) );
 
   return( index );
 }
@@ -463,32 +457,16 @@ singlevaraux( bvm * vm, bfuncinfo * finfo, bstring * s, bexpdesc * var )
                /* find the previous scope  */
               int res = singlevaraux( vm, finfo->prev, s, var );
               if ( res == ETUPVAL || res == ETLOCAL )
-                {
-                  idx = new_upval(
-                    finfo,
-                    s,
-                    var
-                                 );                                           /*
-                                                                                 new
-                                                                                 upvalue
-                                                                               */
+                { /* new upvalue */
+                  idx = new_upval( finfo, s, var);
                 }
               else if ( be_globalvar_find( vm, s ) >= 0 )
-                {
-                  return( ETGLOBAL );                                         /*
-                                                                                 global
-                                                                                 variable
-                                                                               */
+                { /* global variable */
+                  return( ETGLOBAL );
                 }
               else
-                {
-                  return( ETVOID );                                           /*
-                                                                                 unknow
-                                                                                 (new
-                                                                                 variable
-                                                                                 or
-                                                                                 error)
-                                                                               */
+                { /* unknow (new variable or error) */
+                  return( ETVOID );
                 }
             }
           init_exp( var, ETUPVAL, idx );
@@ -601,7 +579,7 @@ new_primtype( bparser * parser, const char * type, bexpdesc * e )
   bvm *       vm    = parser->vm;
   bfuncinfo * finfo = parser->finfo;
 
-  idx = be_globalvar_find( vm, be_newstr( vm, type ));
+  idx = be_globalvar_find( vm, be_newstr( vm, type ) );
   init_exp( e, ETGLOBAL, idx );
   idx = be_code_nextreg( finfo, e );
   be_code_call( finfo, idx, 0 );
@@ -745,7 +723,7 @@ member_expr( bparser * parser, bexpdesc * e )
       push_error(
         parser,
         "invalid syntax near '%s'",
-        be_token2str( parser->vm, &next_token( parser ))
+        be_token2str( parser->vm, &next_token( parser ) )
                 );
     }
 }
@@ -767,7 +745,7 @@ index_expr( bparser * parser, bexpdesc * e )
 static void
 simple_expr( bparser * parser, bexpdesc * e )
 {
-  switch ( next_type( parser ))
+  switch ( next_type( parser ) )
     {
     case TokenInteger:
       init_exp( e, ETINT, next_token( parser ).u.i );
@@ -809,7 +787,7 @@ simple_expr( bparser * parser, bexpdesc * e )
 static void
 primary_expr( bparser * parser, bexpdesc * e )
 {
-  switch ( next_type( parser ))
+  switch ( next_type( parser ) )
     {
     case OptLBK:                 /* '(' expr ')' */
       scan_next_token( parser ); /* skip '(' */
@@ -843,7 +821,7 @@ suffix_expr( bparser * parser, bexpdesc * e )
   primary_expr( parser, e );
   for (;; )
     {
-      switch ( next_type( parser ))
+      switch ( next_type( parser ) )
         {
         case OptLBK: /* '(' function call */
           call_expr( parser, e );
@@ -901,7 +879,7 @@ assign_expr( bparser * parser )
       compound_assign( parser, op, &e, &e1 );
       if ( e.type == ETVOID ) /* new variable */
         new_var( parser, e.v.s, &e );
-      if ( be_code_setvar( parser->finfo, &e, &e1 ))
+      if ( be_code_setvar( parser->finfo, &e, &e1 ) )
         {
           parser->lexer.linenumber = line;
           parser_error(
@@ -930,7 +908,7 @@ sub_expr( bparser * parser, bexpdesc * e, int prio )
       scan_next_token( parser );
       sub_expr( parser, e, UNARY_OP_PRIO );
       check_var( parser, e );
-      if ( be_code_unop( finfo, op, e )) /* encode unary op */
+      if ( be_code_unop( finfo, op, e ) ) /* encode unary op */
         parser_error( parser, "unop error" );
     }
   else
@@ -938,14 +916,14 @@ sub_expr( bparser * parser, bexpdesc * e, int prio )
       suffix_expr( parser, e );
     }
   op = get_binop( parser );
-  while ( op != OP_NOT_BINARY && prio > binary_op_prio( op ))
+  while ( op != OP_NOT_BINARY && prio > binary_op_prio( op ) )
     {
       bexpdesc e2;
       check_var( parser, e );
       scan_next_token( parser );
       be_code_prebinop( finfo, op, e ); /* and or */
       init_exp( &e2, ETVOID, 0 );
-      sub_expr( parser, &e2, binary_op_prio( op ));
+      sub_expr( parser, &e2, binary_op_prio( op ) );
       check_var( parser, &e2 );
       be_code_binop( finfo, op, e, &e2 ); /* encode binary op */
       op = get_binop( parser );
@@ -972,7 +950,7 @@ expr_stmt( bparser * parser )
 static int
 block_follow( bparser * parser )
 {
-  switch ( next_type( parser ))
+  switch ( next_type( parser ) )
     {
     case KeyElse:
     case KeyElif:
@@ -1101,14 +1079,14 @@ for_init( bparser * parser, bexpdesc * v )
 
    /* .it = __iterator__(expr) */
   s = be_newstr( vm, "__iterator__" );
-  init_exp( &e, ETGLOBAL, be_globalvar_find( vm, s ));
+  init_exp( &e, ETGLOBAL, be_globalvar_find( vm, s ) );
   be_code_nextreg( finfo, &e ); /* code function '__iterator__' */
   expr( parser, v );
   check_var( parser, v );
   be_code_nextreg( finfo, v );
   be_code_call( finfo, e.v.idx, 1 ); /* call __iterator__(expr) */
   s = be_newstr( vm, ".it" );
-  init_exp( v, ETLOCAL, new_localvar( finfo, s ));
+  init_exp( v, ETLOCAL, new_localvar( finfo, s ) );
   be_code_setvar( finfo, v, &e ); /* code .it = __iterator__(expr) */
   be_code_freeregs( finfo, 1 );   /* free register of e */
   stack_reset( parser, top );
@@ -1132,7 +1110,7 @@ for_iter( bparser * parser, bexpdesc * v, bexpdesc * it )
   blobk_setloop( finfo );
    /* __hasnext__(.it) */
   s = be_newstr( vm, "__hasnext__" );
-  init_exp( &e, ETGLOBAL, be_globalvar_find( vm, s ));
+  init_exp( &e, ETGLOBAL, be_globalvar_find( vm, s ) );
   be_code_nextreg( finfo, &e );      /* code function '__hasnext__' */
   be_code_nextreg( finfo, it );      /* code argv[0]: '.it' */
   be_code_call( finfo, e.v.idx, 1 ); /* call __hasnext__(.it) */
@@ -1140,7 +1118,7 @@ for_iter( bparser * parser, bexpdesc * v, bexpdesc * it )
   brk = e.f;
    /* var = __next__(.it) */
   s = be_newstr( vm, "__next__" );
-  init_exp( &e, ETGLOBAL, be_globalvar_find( vm, s ));
+  init_exp( &e, ETGLOBAL, be_globalvar_find( vm, s ) );
   be_code_nextreg( finfo, &e );      /* code function '__next__' */
   be_code_nextreg( finfo, it );      /* code argv[0]: '.it' */
   be_code_call( finfo, e.v.idx, 1 ); /* call __next__(.it) */
@@ -1189,7 +1167,7 @@ break_stmt( bparser * parser )
   bblockinfo * b = get_loop_block( parser );
 
   if ( b != NULL ) /* connect jump */
-    be_code_conjump( f, &b->breaklist, be_code_jump( f ));
+    be_code_conjump( f, &b->breaklist, be_code_jump( f ) );
   else parser_error( parser, "break not loop" );
 }
 
@@ -1200,7 +1178,7 @@ continue_stmt( bparser * parser )
   bblockinfo * b = get_loop_block( parser );
 
   if ( b != NULL ) /* connect jump */
-    be_code_conjump( f, &b->continuelist, be_code_jump( f ));
+    be_code_conjump( f, &b->continuelist, be_code_jump( f ) );
   else parser_error( parser, "continue not loop" );
 }
 
@@ -1221,13 +1199,13 @@ func_name( bparser * parser, bexpdesc * e, int ismethod )
       scan_next_token( parser ); /* skip token */
        /* '-*' neg method */
       if ( type == OptFlip
-         || ( type == OptSub && next_type( parser ) == OptMul ))
+         || ( type == OptSub && next_type( parser ) == OptMul ) )
         {
           scan_next_token( parser ); /* skip '*' */
-          return( be_newstr( parser->vm, "-*" ));
+          return( be_newstr( parser->vm, "-*" ) );
         }
 
-      return( be_newstr( parser->vm, be_tokentype2str( type )));
+      return( be_newstr( parser->vm, be_tokentype2str( type ) ) );
     }
   push_error(
     parser,
@@ -1325,9 +1303,9 @@ static void
 class_block( bparser * parser, bclass * c )
 {
    /* { [;] } */
-  while ( block_follow( parser ))
+  while ( block_follow( parser ) )
     {
-      switch ( next_type( parser ))
+      switch ( next_type( parser ) )
         {
         case KeyVar:
           classvar_stmt( parser, c );
@@ -1438,7 +1416,7 @@ var_stmt( bparser * parser )
 static void
 statement( bparser * parser )
 {
-  switch ( next_type( parser ))
+  switch ( next_type( parser ) )
     {
     case KeyIf:
       if_stmt( parser );
@@ -1497,7 +1475,7 @@ statement( bparser * parser )
 static void
 stmtlist( bparser * parser )
 {
-  while ( block_follow( parser )) statement( parser );
+  while ( block_follow( parser ) ) statement( parser );
 }
 
 static void

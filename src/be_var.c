@@ -10,8 +10,8 @@ void
 be_globalvar_init( bvm * vm )
 {
   vm->gbldesc.idxtab = be_map_new( vm );
-  be_vector_init( &vm->gbldesc.gvalist, sizeof( bvalue ));
-  be_gc_fix( vm, gc_object( vm->gbldesc.idxtab ));
+  be_vector_init( &vm->gbldesc.gvalist, sizeof( bvalue ) );
+  be_gc_fix( vm, gc_object( vm->gbldesc.idxtab ) );
 }
 
 void
@@ -26,7 +26,7 @@ be_globalvar_find( bvm * vm, bstring * name )
 {
   bvalue * res = be_map_findstr( vm->gbldesc.idxtab, name );
 
-  if ( res ) return( var_toidx( res ));
+  if ( res ) return( var_toidx( res ) );
 
   return( -1 ); /* not found */
 }
@@ -45,7 +45,7 @@ be_globalvar_new( bvm * vm, bstring * name )
       var_setint( desc, idx );
       be_vector_resize( &gd->gvalist, idx + 1 );
        /* set the new variable to nil */
-      var_setnil((bvalue *) ( gd->gvalist.end ));
+      var_setnil( (bvalue *) ( gd->gvalist.end ) );
     }
 
   return( idx );
