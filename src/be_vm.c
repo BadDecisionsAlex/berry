@@ -37,7 +37,8 @@
 #define ibinop( op, a, b )    (( a )->v.i op( b )->v.i )
 
 #define define_function( name, block )           \
-  static void name( bvm * vm, binstruction ins ) \
+  static void                                    \
+  name( bvm * vm, binstruction ins )             \
   {                                              \
     block                                        \
   }
@@ -544,7 +545,7 @@ i_mod( bvm * vm, binstruction ins )
 {
   bvalue * dst = RA( ins ), * a = RKB( ins ), * b = RKC( ins );
 
-  if ( var_isint( a ) && var_isint( b )) var_setint( dst, ibinop( %, a, b ));
+  if ( var_isint( a ) && var_isint( b ) ) var_setint( dst, ibinop( %, a, b ) );
   else if ( var_isinstance( a )) object_binop( vm, "%", ins, a, b );
   else binop_error( vm, "%", a, b );
 }

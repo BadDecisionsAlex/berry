@@ -21,12 +21,11 @@ find_native( bstring * path )
 
 
 
-
   return( NULL );
 }
 
 static bmodule *
-find_existed( bvm * vm, bntvmodule * nm )
+find_existing( bvm * vm, bntvmodule * nm )
 {
   bmodule * node = vm->modulelist;
 
@@ -108,11 +107,9 @@ load_module( bvm * vm, bntvmodule * nm, bvalue * dst )
 {
   if ( nm )
     {
-      bmodule * obj = find_existed( vm, nm );
-      if ( obj ) /* existed module */
-        var_setmodule( dst, obj );
-      else       /* new module */
-        obj = new_module( vm, nm, dst );
+      bmodule * obj = find_existing( vm, nm );
+      if ( obj ) var_setmodule( dst, obj ); /* existing module */ 
+      else obj = new_module( vm, nm, dst ); /* new module */ 
 
       return( obj );
     }

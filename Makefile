@@ -9,8 +9,8 @@ MAP_BUILD	=  tools/map_build/map_build
 STR_BUILD	=  tools/str_build/str_build
 out         ?= build
 
-INCPATH	 = src default
-SRCPATH	 = src default
+INCPATH	 = src
+SRCPATH	 = src
 
 CFLAGS += -DUSE_READLINE_LIB
 LIBS += -lreadline
