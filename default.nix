@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, readline }:
+{ stdenv, fetchFromGitHub, readline, ncurses, my-clibs }:
 
 stdenv.mkDerivation rec {
 
@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
 
   src = ./.;
 
-  buildInputs = [ readline ];
+  buildInputs = [ readline ncurses my-clibs ];
 
   meta = with stdenv.lib; {
     description = "Ultra-lightweight embedded scripting language.";

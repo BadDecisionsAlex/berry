@@ -60,3 +60,4 @@ tags
 *.user
 .vscode
 generate/
+lsd

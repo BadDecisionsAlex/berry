@@ -1,4 +1,4 @@
-CFLAGS	    =  -Wall -Wextra -std=c99 -pedantic-errors -O2
+CFLAGS	    =  -Wall -Wextra -std=gnu11 -pedantic-errors -O2
 LIBS	    =  -lm
 TARGET	    =  lsd
 CC	        =  gcc
