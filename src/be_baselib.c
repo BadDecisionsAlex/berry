@@ -13,7 +13,7 @@ l_assert( bvm * vm )
   /* assertion fails when there is no argument
    * or the first argument is nil or false. */
   if ( !be_top( vm )
-     || !be_tobool( vm, 1 )) be_pusherror( vm, "assert failed!" );
+     || !be_tobool( vm, 1 ) ) be_pusherror( vm, "assert failed!" );
   be_return_nil( vm );
 }
 
@@ -57,8 +57,8 @@ l_input( bvm * vm )
 {
   char * line;
 
-  if ( be_top( vm ) && be_isstring( vm, 1 )) /* echo prompt */
-    be_writestring( be_tostring( vm, 1 ));
+  if ( be_top( vm ) && be_isstring( vm, 1 ) ) /* echo prompt */
+    be_writestring( be_tostring( vm, 1 ) );
   line = m_readline();
   be_pushstring( vm, line );
   be_free( line );
@@ -77,7 +77,7 @@ l_exit( bvm * vm )
 {
   int status = 0;
 
-  if ( be_top( vm ) && be_isint( vm, -1 )) status = be_toindex( vm, -1 );
+  if ( be_top( vm ) && be_isint( vm, -1 ) ) status = be_toindex( vm, -1 );
   be_exit( vm, status );
   be_return_nil( vm );
 }
@@ -95,7 +95,7 @@ l_memcount( bvm * vm )
 static int
 l_super( bvm * vm )
 {
-  if ( be_top( vm ))
+  if ( be_top( vm ) )
     {
       be_getsuper( vm, 1 );
       be_return( vm );
@@ -106,9 +106,9 @@ l_super( bvm * vm )
 static int
 l_type( bvm * vm )
 {
-  if ( be_top( vm ))
+  if ( be_top( vm ) )
     {
-      be_pushstring( vm, be_typename( vm, 1 ));
+      be_pushstring( vm, be_typename( vm, 1 ) );
       be_return( vm );
     }
   be_return_nil( vm );
@@ -117,7 +117,7 @@ l_type( bvm * vm )
 static int
 l_classname( bvm * vm )
 {
-  if ( be_top( vm ))
+  if ( be_top( vm ) )
     {
       const char * t = be_classname( vm, 1 );
       if ( t )
@@ -132,14 +132,14 @@ l_classname( bvm * vm )
 static int
 l_number( bvm * vm )
 {
-  if ( be_top( vm ))
+  if ( be_top( vm ) )
     {
-      if ( be_isstring( vm, 1 ))
+      if ( be_isstring( vm, 1 ) )
         {
-          be_str2num( vm, be_tostring( vm, 1 ));
+          be_str2num( vm, be_tostring( vm, 1 ) );
           be_return( vm );
         }
-      else if ( be_isnumber( vm, 1 ))
+      else if ( be_isnumber( vm, 1 ) )
         {
           be_pushvalue( vm, 1 );
           be_return( vm );
@@ -151,18 +151,18 @@ l_number( bvm * vm )
 static int
 l_int( bvm * vm )
 {
-  if ( be_top( vm ))
+  if ( be_top( vm ) )
     {
-      if ( be_isstring( vm, 1 ))
+      if ( be_isstring( vm, 1 ) )
         {
           const char * s = be_tostring( vm, 1 );
-          be_pushint( vm, be_str2int( s, NULL ));
+          be_pushint( vm, be_str2int( s, NULL ) );
         }
-      else if ( be_isreal( vm, 1 ))
+      else if ( be_isreal( vm, 1 ) )
         {
-          be_pushint( vm, (bint) be_toreal( vm, 1 ));
+          be_pushint( vm, (bint) be_toreal( vm, 1 ) );
         }
-      else if ( be_isint( vm, 1 ))
+      else if ( be_isint( vm, 1 ) )
         {
           be_pushvalue( vm, 1 );
         }
@@ -178,18 +178,18 @@ l_int( bvm * vm )
 static int
 l_real( bvm * vm )
 {
-  if ( be_top( vm ))
+  if ( be_top( vm ) )
     {
-      if ( be_isstring( vm, 1 ))
+      if ( be_isstring( vm, 1 ) )
         {
           const char * s = be_tostring( vm, 1 );
-          be_pushreal( vm, be_str2real( s, NULL ));
+          be_pushreal( vm, be_str2real( s, NULL ) );
         }
-      else if ( be_isint( vm, 1 ))
+      else if ( be_isint( vm, 1 ) )
         {
-          be_pushreal( vm, (breal) be_toint( vm, 1 ));
+          be_pushreal( vm, (breal) be_toint( vm, 1 ) );
         }
-      else if ( be_isreal( vm, 1 ))
+      else if ( be_isreal( vm, 1 ) )
         {
           be_pushvalue( vm, 1 );
         }
@@ -205,7 +205,7 @@ l_real( bvm * vm )
 static int
 l_iterator( bvm * vm )
 {
-  if ( be_isinstance( vm, 1 ))
+  if ( be_isinstance( vm, 1 ) )
     {
       be_getmember( vm, 1, "iter" );
       be_pushvalue( vm, 1 );
@@ -219,7 +219,7 @@ l_iterator( bvm * vm )
 static int
 l_hasnext( bvm * vm )
 {
-  if ( be_isinstance( vm, 1 ))
+  if ( be_isinstance( vm, 1 ) )
     {
       be_getmember( vm, 1, "hasnext" );
       be_pushvalue( vm, 1 );
@@ -236,7 +236,7 @@ l_hasnext( bvm * vm )
 static int
 l_next( bvm * vm )
 {
-  if ( be_isinstance( vm, 1 ))
+  if ( be_isinstance( vm, 1 ) )
     {
       be_getmember( vm, 1, "next" );
       be_pushvalue( vm, 1 );
@@ -250,7 +250,7 @@ l_next( bvm * vm )
 static int
 l_str( bvm * vm )
 {
-  if ( be_top( vm )) be_tostring( vm, 1 );
+  if ( be_top( vm ) ) be_tostring( vm, 1 );
   else be_pushstring( vm, "" );
   be_return( vm );
 }
@@ -258,9 +258,9 @@ l_str( bvm * vm )
 static int
 l_length( bvm * vm )
 {
-  if ( be_top( vm ) && be_isstring( vm, 1 ))
+  if ( be_top( vm ) && be_isstring( vm, 1 ) )
     {
-      be_pushint( vm, be_strlen( vm, 1 ));
+      be_pushint( vm, be_strlen( vm, 1 ) );
       be_return( vm );
     }
   be_return_nil( vm );
@@ -290,18 +290,18 @@ m_compile_file( bvm * vm )
 static int
 l_compile( bvm * vm )
 {
-  if ( be_top( vm ) && be_isstring( vm, 1 ))
+  if ( be_top( vm ) && be_isstring( vm, 1 ) )
     {
-      if ( be_top( vm ) >= 2 && be_isstring( vm, 2 ))
+      if ( be_top( vm ) >= 2 && be_isstring( vm, 2 ) )
         {
           const char * s = be_tostring( vm, 2 );
-          if ( !strcmp( s, "string" )) return( m_compile_str( vm ));
+          if ( !strcmp( s, "string" ) ) return( m_compile_str( vm ) );
 
-          if ( !strcmp( s, "file" )) return( m_compile_file( vm ));
+          if ( !strcmp( s, "file" ) ) return( m_compile_file( vm ) );
         }
       else
         {
-          return( m_compile_str( vm ));
+          return( m_compile_str( vm ) );
         }
     }
   be_return_nil( vm );
