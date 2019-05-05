@@ -1,51 +1,61 @@
-#include "be_var.h"
-#include "be_vm.h"
-#include "be_vector.h"
-#include "be_string.h"
-#include "be_map.h"
+
 #include "be_gc.h"
+#include "be_map.h"
+#include "be_string.h"
+#include "be_var.h"
+#include "be_vector.h"
+#include "be_vm.h"
 
-void be_globalvar_init(bvm *vm)
+void
+be_globalvar_init( bvm * vm )
 {
-    vm->gbldesc.idxtab = be_map_new(vm);
-    be_vector_init(&vm->gbldesc.gvalist, sizeof(bvalue));
-    be_gc_fix(vm, gc_object(vm->gbldesc.idxtab));
+  vm->gbldesc.idxtab = be_map_new( vm );
+  be_vector_init( &vm->gbldesc.gvalist, sizeof( bvalue ));
+  be_gc_fix( vm, gc_object( vm->gbldesc.idxtab ));
 }
 
-void be_globalvar_deinit(bvm *vm)
+void
+be_globalvar_deinit( bvm * vm )
 {
-    vm->gbldesc.idxtab = NULL;
-    be_vector_delete(&vm->gbldesc.gvalist);
+  vm->gbldesc.idxtab = NULL;
+  be_vector_delete( &vm->gbldesc.gvalist );
 }
 
-int be_globalvar_find(bvm *vm, bstring *name)
+int
+be_globalvar_find( bvm * vm, bstring * name )
 {
-    bvalue *res = be_map_findstr(vm->gbldesc.idxtab, name);
-    if (res) {
-        return var_toidx(res);
+  bvalue * res = be_map_findstr( vm->gbldesc.idxtab, name );
+
+  if ( res ) return( var_toidx( res ));
+
+  return( -1 ); /* not found */
+}
+
+int
+be_globalvar_new( bvm * vm, bstring * name )
+{
+  bglobaldesc * gd  = &vm->gbldesc;
+  int           idx = be_globalvar_find( vm, name );
+
+  if ( idx == -1 )
+    {
+      bvalue * desc;
+      idx  = be_map_count( gd->idxtab );
+      desc = be_map_insertstr( gd->idxtab, name, NULL );
+      var_setint( desc, idx );
+      be_vector_resize( &gd->gvalist, idx + 1 );
+       /* set the new variable to nil */
+      var_setnil((bvalue *) ( gd->gvalist.end ));
     }
-    return -1; /* not found */
+
+  return( idx );
 }
 
-int be_globalvar_new(bvm *vm, bstring *name)
+void
+be_globalvar_release_space( bvm * vm )
 {
-    bglobaldesc *gd = &vm->gbldesc;
-    int idx = be_globalvar_find(vm, name);
-    if (idx == -1) {
-        bvalue *desc;
-        idx = be_map_count(gd->idxtab);
-        desc = be_map_insertstr(gd->idxtab, name, NULL);
-        var_setint(desc, idx);
-        be_vector_resize(&gd->gvalist, idx + 1);
-        /* set the new variable to nil */
-        var_setnil((bvalue*)(gd->gvalist.end));
-    }
-    return idx;
-}
+  bglobaldesc * gd = &vm->gbldesc;
 
-void be_globalvar_release_space(bvm *vm)
-{
-    bglobaldesc *gd = &vm->gbldesc;
-    be_map_release(vm, gd->idxtab);
-    be_vector_release(&gd->gvalist);
+  be_map_release( vm, gd->idxtab );
+  be_vector_release( &gd->gvalist );
 }

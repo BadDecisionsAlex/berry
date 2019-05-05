@@ -50,7 +50,9 @@
                                                     "[" COMPILER "] on " \
   OS_NAME " (default)\n"                                                 \
 
-static const char * help_information = R"(
+static const char * help_information
+  =
+    R"(
   usage: berry [options] [script [args]]
   avilable options are:
   -i   enter interactive mode after executing 'script'
@@ -75,8 +77,7 @@ get_line( const char * prompt )
     static char buffer[1000];
     fputs( prompt, stdout );
     fflush( stdout );
-    if ( fgets( buffer, sizeof( buffer ), stdin ))
-      return( buffer );
+    if ( fgets( buffer, sizeof( buffer ), stdin )) return( buffer );
 
     return( NULL );
   #endif
@@ -123,8 +124,7 @@ check_args( bvm * vm )
   while ( be_top( vm ) > 0 )
     {
       const char * arg = be_tostring( vm, 1 );
-      if ( arg[0] != '-' )
-        return( args );
+      if ( arg[0] != '-' ) return( args );
 
       if ( strlen( arg ) == 2 )
         {
@@ -180,13 +180,11 @@ analysis_args( bvm * vm )
   if ( be_top( vm ) > 0 )
     {
       int res = dofile( vm );
-      if ( res && !( args & arg_i ))
-        return( res );
+      if ( res && !( args & arg_i )) return( res );
 
       be_pop( vm, be_top( vm ));
     }
-  if ( args & arg_i )
-    return( be_repl( vm, get_line ));
+  if ( args & arg_i ) return( be_repl( vm, get_line ));
 
   return( 0 );
 }

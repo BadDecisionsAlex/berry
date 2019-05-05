@@ -295,8 +295,7 @@ l_compile( bvm * vm )
       if ( be_top( vm ) >= 2 && be_isstring( vm, 2 ))
         {
           const char * s = be_tostring( vm, 2 );
-          if ( !strcmp( s, "string" ))
-            return( m_compile_str( vm ));
+          if ( !strcmp( s, "string" )) return( m_compile_str( vm ));
 
           if ( !strcmp( s, "file" )) return( m_compile_file( vm ));
         }

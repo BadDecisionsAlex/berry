@@ -151,6 +151,7 @@ be_instance_member( binstance * obj, bstring * name, bvalue * dst )
   obj  = instance_member( obj, name, dst );
   type = var_type( dst );
   if ( obj && type == MT_VARIABLE ) *dst = obj->members[dst->v.i];
+
   return( type );
 }
 

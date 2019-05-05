@@ -26,13 +26,19 @@ SRCS	 = $(foreach dir, $(SRCPATH), $(wildcard $(dir)/*.c))
 OBJS	 = $(patsubst %.c, %.o, $(SRCS))
 DEPS	 = $(patsubst %.c, %.d, $(SRCS))
 INCFLAGS = $(foreach dir, $(INCPATH), -I"$(dir)")
+UNCRUSTFLAGS = -c /home/camus/.uncrustify.cfg -l c -q
 
-.PHONY : clean
+.PHONY : clean pretty
 
 all: $(TARGET)
 
 debug: CFLAGS += -O0 -g -DBE_DEBUG
 debug: all
+
+pretty:
+	for f in "$(SRCS)"; do \
+	  uncrustify $(UNCRUSTFLAGS) --replace $$f; \
+	done
 
 $(TARGET): generate/touch $(OBJS)
 	$(MSG) [Linking...]

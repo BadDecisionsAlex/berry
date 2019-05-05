@@ -39,9 +39,13 @@ class_init( bvm * vm, bclass * c, const bnfuncinfo * lib )
   while ( lib->name )
     {
       bstring * s = be_newstr( vm, lib->name );
-      if ( lib->function )         /* method */
+      if ( lib->function )                                                                                                                          /*
+                                                                                                                                                       method
+                                                                                                                                                     */
         be_prim_method_bind( c, s, lib->function );
-      else be_member_bind( c, s ); /* member */
+      else be_member_bind( c, s );                                                                                                                  /*
+                                                                                                                                                       member
+                                                                                                                                                     */
       ++lib;
     }
   be_map_release( vm, c->members ); /* clear space */
@@ -65,12 +69,12 @@ be_regfunc( bvm * vm, const char * name, bntvfunc f )
 void
 be_regclass( bvm * vm, const char * name, const bnfuncinfo * lib )
 {
-  bstring * s   = be_newstr( vm, name );     /* immediate reference must be
-                                                made, prevent GC. */
-  int       idx = be_globalvar_new( vm, s ); /* because relloc is possible,
-                                                index must first figure out. */
-  bclass *  c   = be_newclass( vm, s, NULL );
-  bvalue *  var = be_globalvar( vm, idx );   /* attention evaluation order. */
+  bstring * s  = be_newstr( vm, name );     /* immediate reference must be
+                                               made, prevent GC. */
+  int idx      = be_globalvar_new( vm, s ); /* because relloc is possible,
+                                               index must first figure out. */
+  bclass * c   = be_newclass( vm, s, NULL );
+  bvalue * var = be_globalvar( vm, idx );   /* attention evaluation order. */
 
   var_setclass( var, c );
   class_init( vm, c, lib ); /* bind members */
@@ -92,8 +96,7 @@ be_pop( bvm * vm, int n )
 int
 be_absindex( bvm * vm, int index )
 {
-  if ( index > 0 )
-    return( index );
+  if ( index > 0 ) return( index );
 
   be_assert( vm->reg <= vm->top + index );
 
@@ -233,11 +236,9 @@ be_toreal( bvm * vm, int index )
 {
   bvalue * v = index2value( vm, index );
 
-  if ( var_isreal( v ))
-    return( var_toreal( v ));
+  if ( var_isreal( v )) return( var_toreal( v ));
 
-  if ( var_isint( v ))
-    return( cast( breal, var_toint( v )));
+  if ( var_isint( v )) return( cast( breal, var_toint( v )));
 
   return( cast( breal, 0.0 ));
 }
@@ -507,8 +508,7 @@ be_strlen( bvm * vm, int index )
 {
   bvalue * v = index2value( vm, index );
 
-  if ( var_isstr( v ))
-    return( str_len( var_tostr( v )));
+  if ( var_isstr( v )) return( str_len( var_tostr( v )));
 
   return( 0 );
 }
@@ -883,8 +883,7 @@ be_iter_next( bvm * vm, int index )
   bvalue * o = index2value( vm, index );
 
   if ( var_islist( o )) return( list_next( vm ));
-  else if ( var_ismap( o ))
-    return( map_next( vm, o ));
+  else if ( var_ismap( o )) return( map_next( vm, o ));
 
   return( 0 );
 }
@@ -895,8 +894,7 @@ be_iter_hasnext( bvm * vm, int index )
   bvalue * o = index2value( vm, index );
 
   if ( var_islist( o )) return( list_hasnext( vm, o ));
-  else if ( var_ismap( o ))
-    return( map_hasnext( vm, o ));
+  else if ( var_ismap( o )) return( map_hasnext( vm, o ));
 
   return( 0 );
 }
@@ -913,6 +911,7 @@ be_refcontains( bvm * vm, int index )
   if ( ref )
     {
       while ( ref <= top && *ref != ins ) ++ref;
+
       return( ref <= top );
     }
 
