@@ -1,10 +1,10 @@
-CFLAGS	    =  -Wall -Wextra -std=gnu11 -pedantic-errors -O2
-LIBS	    =  -lm
-TARGET	    =  lsd
-CC	        =  gcc
-MAKE	    =  make
-MKDIR	    =  mkdir
-TOUCH	    =  echo >>
+CFLAGS		=  -Wall -Wextra -std=gnu11 -pedantic-errors -O2
+LIBS		=  -lm
+TARGET		=  lsd
+CC			=  gcc
+MAKE		=  make
+MKDIR		=  mkdir
+TOUCH		=  echo >>
 MAP_BUILD	=  tools/map_build/map_build
 STR_BUILD	=  tools/str_build/str_build
 out         ?= build
@@ -26,6 +26,8 @@ SRCS	 = $(foreach dir, $(SRCPATH), $(wildcard $(dir)/*.c))
 OBJS	 = $(patsubst %.c, %.o, $(SRCS))
 DEPS	 = $(patsubst %.c, %.d, $(SRCS))
 INCFLAGS = $(foreach dir, $(INCPATH), -I"$(dir)")
+HEADERS  = $(foreach dir, $(SRCPATH), $(wildcard $(dir)/*.h))
+
 UNCRUSTFLAGS = -c /home/camus/.uncrustify.cfg -l c -q
 
 .PHONY : clean pretty
@@ -36,9 +38,10 @@ debug: CFLAGS += -O0 -g -DBE_DEBUG
 debug: all
 
 pretty:
-	for f in "$(SRCS)"; do \
+	for f in "$(SRCS) $(HEADERS)"; do \
 	  uncrustify $(UNCRUSTFLAGS) --replace $$f; \
 	done
+	rm **/*~
 
 $(TARGET): generate/touch $(OBJS)
 	$(MSG) [Linking...]

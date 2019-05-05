@@ -17,7 +17,8 @@ find_native( bstring * path )
   bntvmodule * const * node = be_module_table;
 
   for (; ( module = *node ) != NULL; ++node )
-    if ( !strcmp( module->name, str( path ))) return( module );
+    if ( !strcmp( module->name, str( path ) ) ) return( module );
+
 
 
 
@@ -68,7 +69,7 @@ insert_attrs( bvm * vm, bmap * table, bntvmodule * nm )
           break;
 
         case BE_CSTRING:
-          var_setstr( v, be_newstr( vm, node->u.s ));
+          var_setstr( v, be_newstr( vm, node->u.s ) );
           break;
 
         case BE_CMODULE:
@@ -108,8 +109,8 @@ load_module( bvm * vm, bntvmodule * nm, bvalue * dst )
   if ( nm )
     {
       bmodule * obj = find_existing( vm, nm );
-      if ( obj ) var_setmodule( dst, obj ); /* existing module */ 
-      else obj = new_module( vm, nm, dst ); /* new module */ 
+      if ( obj ) var_setmodule( dst, obj );  /* existing module */
+      else obj = new_module( vm, nm, dst );  /* new module */
 
       return( obj );
     }
@@ -122,7 +123,7 @@ be_module_load( bvm * vm, bstring * path, bvalue * dst )
 {
   bntvmodule * nm = find_native( path );
 
-  return( load_module( vm, nm, dst ));
+  return( load_module( vm, nm, dst ) );
 }
 
 void
@@ -147,5 +148,5 @@ be_module_delete( bvm * vm, bmodule * module )
 bvalue *
 be_module_attr( bmodule * module, bstring * attr )
 {
-  return( be_map_findstr( module->table, attr ));
+  return( be_map_findstr( module->table, attr ) );
 }
