@@ -1,25 +1,19 @@
-CFLAGS	 = -Wall -Wextra -std=c99 -pedantic-errors -O2
-LIBS	 =  -lm
-TARGET	 = lsd
-CC	     = gcc
-MAKE	 = make
-MKDIR	 = mkdir
-TOUCH	 = echo >>
-MAP_BUILD	= tools/map_build/map_build
-STR_BUILD	= tools/str_build/str_build
+CFLAGS	    =  -Wall -Wextra -std=c99 -pedantic-errors -O2
+LIBS	    =  -lm
+TARGET	    =  lsd
+CC	        =  gcc
+MAKE	    =  make
+MKDIR	    =  mkdir
+TOUCH	    =  echo >>
+MAP_BUILD	=  tools/map_build/map_build
+STR_BUILD	=  tools/str_build/str_build
+out         ?= build
 
 INCPATH	 = src default
 SRCPATH	 = src default
 
-ifeq ($(OS), Windows_NT) # Windows
-    CFLAGS += -Wno-format # for "%I64d" warning
-    TARGET := $(TARGET).exe
-    MAP_BUILD := $(MAP_BUILD).exe
-    STR_BUILD := $(STR_BUILD).exe
-else
-    CFLAGS += -DUSE_READLINE_LIB
-    LIBS += -lreadline
-endif
+CFLAGS += -DUSE_READLINE_LIB
+LIBS += -lreadline
 
 ifneq ($(V), 1)
     Q=@
@@ -72,7 +66,8 @@ $(MAP_BUILD):
 	$(Q) $(MAKE) -C tools/map_build -s
 
 install:
-	cp $(TARGET) /usr/local/bin
+	$(MKDIR) -p ${out}/bin
+	cp $(TARGET) ${out}/bin/$(TARGET)
 
 uninstall:
 	$(RM) /usr/local/bin/$(TARGET)

@@ -10,11 +10,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ readline ];
 
-  installPhase = ''
-    mkdir -p $out/bin
-    cp ${pname} $out/bin/${pname}
-  '';
-
   meta = with stdenv.lib; {
     description = "Ultra-lightweight embedded scripting language.";
     homepage = https://github.com/Skiars/berry.git;
