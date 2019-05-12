@@ -319,13 +319,13 @@ be_load_baselib( bvm * vm )
 {
   be_regfunc( vm, "assert", l_assert );
   be_regfunc( vm, "print", l_print );
-  be_regfunc( vm, "input", l_input );
+  be_regfunc( vm, "read", l_input );
   be_regfunc( vm, "clock", l_clock );
   be_regfunc( vm, "exit", l_exit );
   be_regfunc( vm, "super", l_super );
-  be_regfunc( vm, "memcount", l_memcount );
-  be_regfunc( vm, "type", l_type );
-  be_regfunc( vm, "classname", l_classname );
+  be_regfunc( vm, "sizeof", l_memcount );
+  be_regfunc( vm, "typeof", l_type );
+  be_regfunc( vm, "classof", l_classname );
   be_regfunc( vm, "number", l_number );
   be_regfunc( vm, "str", l_str );
   be_regfunc( vm, "int", l_int );

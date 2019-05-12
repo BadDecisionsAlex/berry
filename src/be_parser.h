@@ -5,12 +5,14 @@
 #include "be_object.h"
 #include "be_string.h"
 
+/* Expression Types. */
 typedef enum
 {
   ETVOID, ETNIL, ETBOOL, ETREAL, ETINT, ETSTRING, ETPROTO, ETLOCAL, ETGLOBAL,
   ETUPVAL, ETMEMBER, ETINDEX, ETCONST, ETREG
 } exptype_t;
 
+/* Expression Description. */
 typedef struct
 {
   union

@@ -61,19 +61,23 @@ typedef enum
   KeyIf,          /* keyword if */
   KeyElif,        /* keyword elif */
   KeyElse,        /* keyword else */
+  KeyFi,          /* keyword fi */
   KeyWhile,       /* keyword while */
   KeyFor,         /* keyword for */
-  KeyDef,         /* keyword def */
   KeyEnd,         /* keyword end */
-  KeyClass,       /* keyword class */
+  KeyDo,          /* keyword do */
+  KeyDone,        /* keyword done */
   KeyBreak,       /* keyword break */
   KeyContinue,    /* keyword continue */
+  KeyDef,         /* keyword def */
+  KeyEndef,       /* keyword endef */
+  KeyClass,       /* keyword class */
+  KeyEndclass,    /* keyword endclass */
   KeyReturn,      /* keyword return */
   KeyTrue,        /* keyword true */
   KeyFalse,       /* keyword false */
   KeyNil,         /* keyword nil */
   KeyVar,         /* keyword var */
-  KeyDo,          /* keyword do */
   KeyImport,      /* keyword import */
   KeyAs           /* keyword as */
 } btokentype;

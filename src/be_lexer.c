@@ -25,29 +25,34 @@
 /* IMPORTANT: This must follow the enum found in be_lexer.h !!! */
 static const char * const kwords_tab[] =
 {
-  "NONE",   "EOS",     "ID",       "INT",          "REAL",       "STR",
+  "NONE",   "EOS",      "ID",       "INT",          "REAL",       "STR",
   "=",
   "+=",     "-=",
-  "*=",     "/=",      "%=",
-  "&=",     "|=",      "^=",       "<<=",          ">>=",        "+",
+  "*=",     "/=",       "%=",
+  "&=",     "|=",       "^=",       "<<=",          ">>=",        "+",
   "-",
   "*",
   "/",
-  "%",      "<",       "<=",       "==",
-  "!=",     ">",       ">=",       "&",            "|",          "^",
+  "%",      "<",        "<=",       "==",
+  "!=",     ">",        ">=",       "&",            "|",          "^",
   "<<",
   ">>",     "..",
-  "&&",     "||",      "!",        "~",            "(",
-  ")",      "[",       "]",        "{",            "}",          ".",
+  "&&",     "||",       "!",        "~",            "(",
+  ")",      "[",        "]",        "{",            "}",          ".",
   ",",
   ";",
   ":",
-  "if",     "elif",    "else",     "while",
-  "for",    "def",     "end",      "class",        "break",      "continue",
+  "if",     "elif",     "else",     "fi",
+  "while",  "for",
+  "end",
+  "do",     "done",
+  "break",  "continue",
+  "def",    "endef",
+  "class",  "endclass",
   "return",
-  "true",
-  "false",
-  "nil",    "var",     "do",       "import",       "as"
+  "true",   "false",    "nil",
+  "var",
+  "import", "as"
 };
 
 void

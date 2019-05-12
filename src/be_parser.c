@@ -23,33 +23,32 @@
 #define ASSIGN_OP_PRIO    15
 
 /* get binary operator priority */
-#define binary_op_prio( op )          \
-  ( binary_op_prio_tab[cast_int( op ) \
-                       - OptAdd] )
+#define binary_op_prio( op )                      \
+  ( binary_op_prio_tab[cast_int( op ) - OptAdd] )
 
 #define scan_next_token( parser )    ( be_lexer_scan_next( &( parser )->lexer ) )
 #define next_token( parser )         ( ( parser )->lexer.token )
 #define next_type( parser )          ( next_token( parser ).type )
 #define max( a, b )                  ( ( a ) > ( b ) ? ( a ) : ( b ) )
+
 #define token2str( parser ) \
-  be_token2str(             \
-    ( parser )->vm,         \
-    &next_token( parser )   \
-              )
+  be_token2str( ( parser )->vm, &next_token( parser ) )
 
 #define upval_index( v )      ( ( v ) & 0xFF )
 #define upval_target( v )     ( (bbyte) ( ( ( v ) >> 8 ) & 0xFF ) )
 #define upval_instack( v )    ( (bbyte) ( ( ( v ) >> 16 ) != 0 ) )
-#define upval_desc( i, t, s )                    \
-  ( ( ( i ) & 0xFF ) | ( ( ( t ) & 0xFF ) << 8 ) \
-    | ( ( ( s ) != 0 ) << 16 ) )
+
+#define upval_desc( i, t, s )   \
+  (   ( ( i ) & 0xFF )          \
+  | ( ( ( t ) & 0xFF ) << 8  )  \
+  | ( ( ( s ) != 0   ) << 16 ) )
 
 #define stack_save( parser ) \
   ( ( parser )->vm->top      \
-    - ( parser )->vm->stack )
+  - ( parser )->vm->stack )
+
 #define stack_reset( parser, s ) \
-  ( ( parser )->vm->top          \
-      = ( parser )->vm->stack + ( s ) )
+  ( ( parser )->vm->top = ( parser )->vm->stack + ( s ) )
 
 #define parser_error( p, msg )    be_lexerror( &( p )->lexer, msg )
 
@@ -555,7 +554,7 @@ funcbody( bparser * parser, bstring * name, int ismethod )
   func_varlist( parser );
   stmtlist( parser );
   end_func( parser );
-  match_token( parser, KeyEnd ); /* skip 'end' */
+  match_token( parser, KeyEndef ); /* skip 'endef' */
   return( finfo.proto );
 }
 
@@ -954,7 +953,11 @@ block_follow( bparser * parser )
     {
     case KeyElse:
     case KeyElif:
+    case KeyEndif:
+    case KeyEndef:
+    case KeyEndclass:
     case KeyEnd:
+    case KeyDone:
     case TokenEOS:
 
       return( 0 );
@@ -1018,7 +1021,7 @@ if_stmt( bparser * parser )
       scan_next_token( parser );
       block( parser );
     }
-  match_token( parser, KeyEnd ); /* skip end */
+  match_token( parser, KeyEndif ); /* skip endif */
   be_code_patchjump( parser->finfo, jl );
 }
 
@@ -1028,7 +1031,7 @@ do_stmt( bparser * parser )
    /* DO block END */
   scan_next_token( parser );     /* skip 'do' */
   block( parser );
-  match_token( parser, KeyEnd ); /* skip 'end' */
+  match_token( parser, KeyDone ); /* skip 'done' */
 }
 
 static void
@@ -1344,7 +1347,7 @@ class_stmt( bparser * parser )
       class_inherit( parser, &e );
       class_block( parser, c );
       be_map_release( parser->vm, c->members ); /* clear space */
-      match_token( parser, KeyEnd );            /* skip 'end' */
+      match_token( parser, KeyEndclass );       /* skip 'endclass' */
     }
   else
     {
