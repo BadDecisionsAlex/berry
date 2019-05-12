@@ -953,7 +953,7 @@ block_follow( bparser * parser )
     {
     case KeyElse:
     case KeyElif:
-    case KeyEndif:
+    case KeyFi:
     case KeyEndef:
     case KeyEndclass:
     case KeyEnd:
@@ -1021,7 +1021,7 @@ if_stmt( bparser * parser )
       scan_next_token( parser );
       block( parser );
     }
-  match_token( parser, KeyEndif ); /* skip endif */
+  match_token( parser, KeyFi ); /* skip endif */
   be_code_patchjump( parser->finfo, jl );
 }
 
