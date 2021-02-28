@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ readline ncurses my-clibs ];
 
-  meta = with stdenv.lib; {
+  meta = with pkgs.lib; {
     description = "Ultra-lightweight embedded scripting language.";
     homepage = https://github.com/Skiars/berry.git;
     license = licenses.mit;
